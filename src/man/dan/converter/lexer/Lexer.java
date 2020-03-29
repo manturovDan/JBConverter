@@ -53,6 +53,9 @@ public class Lexer {
                 return Word.minus;
             case '*':
                 return Word.mul;
+            case '%':
+                if (readCh('>') && readCh('%'))
+                    return Word.
         }
 
         if(Character.isDigit(peek)) {
