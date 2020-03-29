@@ -55,7 +55,7 @@ public class Lexer {
                 return Word.mul;
             case '%':
                 if (readCh('>') && readCh('%'))
-                    return Word.
+                    return Word.conveyor;
         }
 
         if(Character.isDigit(peek)) {
