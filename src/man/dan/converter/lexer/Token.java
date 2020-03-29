@@ -3,7 +3,7 @@ package man.dan.converter.lexer;
 public class Token {
     public final int tag;
 
-    public Token(int t) {
+    protected Token(int t) {
         tag = t;
     }
 
