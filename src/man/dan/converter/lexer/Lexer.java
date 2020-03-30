@@ -8,7 +8,7 @@ import static java.lang.Math.abs;
 public class Lexer {
     protected HashMap<String, Word> words = new HashMap<>();
     protected String parsed;
-    int curCh = 0;
+    int curCh = -1;
     char peek = ' ';
 
     protected void reserve(Word w) {
@@ -29,7 +29,9 @@ public class Lexer {
 
     public Lexer(String s) {
         parsed = s;
-        //reserve(new Word());
+        reserve(Word.filter);
+        reserve(Word.map);
+        reserve(Word.cl_brace);
     }
 
     public Token scan() throws Exception {
@@ -85,11 +87,14 @@ public class Lexer {
                 readCh();
             } while (Character.isLetter(peek));
 
-            String s = str.toString();
+            if (peek == '{') {
+                str.append(peek);
+                String s = str.toString();
 
-            Word w = words.get(s);
-            if (w != null)
-                return w;
+                Word w = words.get(s);
+                if (w != null)
+                    return w;
+            }
 
             throw new Exception("Syntax Error");
         }

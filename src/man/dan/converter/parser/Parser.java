@@ -16,7 +16,14 @@ public class Parser {
         look = lexer.scan();
     }
 
-    public void expression() {
+    public void analysis() {
 
+    }
+
+    public void expression() throws Exception {
+        while (true) {
+            System.out.println(look);
+            move();
+        }
     }
 }
