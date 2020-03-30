@@ -17,14 +17,34 @@ public class Parser {
         look = lexer.scan();
     }
 
-    public void analysis() {
+    public void analysis() throws Exception {
+        for (;;) {
+            if (look == Word.filter) {
+                System.out.println("FILTER");
+                expression();
+            }
+            else if (look == Word.map) {
+                System.out.println("MAP");
+                expression();
+            }
 
+            move();
+
+            if (look == Word.EOS)
+                break;
+            else if (look != Word.conveyor)
+                throw new Exception("Syntax Error");
+
+            System.out.println("PIPE");
+            move();
+        }
     }
 
     public void expression() throws Exception {
-        while (look != Word.EOS) {
+        for (; look != Word.cl_brace; move()) {
             System.out.println(look);
-            move();
+
+
         }
     }
 }
