@@ -9,22 +9,22 @@ public class Word extends Token {
     }
 
     public static final Word
-        and = new Word( "&", Tag.AND),
-        or = new Word("|", Tag.OR),
-        equal = new Word("=", Tag.EQUAL),
-        greater = new Word(">", Tag.GREATER),
-        less = new Word("<", Tag.LESS),
-        minus = new Word("-", Tag.MINUS),
-        plus = new Word("+", Tag.PLUS),
-        mul = new Word("*", Tag.MUL),
-        conveyor = new Word("%>%", Tag.CONVEYOR),
-        element = new Word("element", Tag.ELEMENT),
-        map = new Word("map{", Tag.MAP),
-        filter = new Word("filter{", Tag.FILTER),
-        cl_brace = new Word("}", Tag.CL_BRACE),
-        op_bracket = new Word("(", Tag.OP_BRACKET),
-        cl_bracket = new Word(")", Tag.CL_BRACKET),
-        EOS = new Word("EOS", Tag.EOS);
+        and = new Word( "&", Tagv.AND),
+        or = new Word("|", Tagv.OR),
+        equal = new Word("=", Tagv.EQUAL),
+        greater = new Word(">", Tagv.GREATER),
+        less = new Word("<", Tagv.LESS),
+        minus = new Word("-", Tagv.MINUS),
+        plus = new Word("+", Tagv.PLUS),
+        mul = new Word("*", Tagv.MUL),
+        conveyor = new Word("%>%", Tagv.CONVEYOR),
+        element = new Word("element", Tagv.ELEMENT),
+        map = new Word("map{", Tagv.MAP),
+        filter = new Word("filter{", Tagv.FILTER),
+        cl_brace = new Word("}", Tagv.CL_BRACE),
+        op_bracket = new Word("(", Tagv.OP_BRACKET),
+        cl_bracket = new Word(")", Tagv.CL_BRACKET),
+        EOS = new Word("EOS", Tagv.EOS);
     //and so on
 
     public String toString() {
