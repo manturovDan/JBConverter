@@ -41,6 +41,17 @@ public class Parser {
     }
 
     public void expression() throws Exception {
+        /*
+        Priority:
+        1) - unary
+        2) *
+        3) + - binary
+        4) > <
+        5) =
+        6) &
+        7) |
+         */
+        move();
         for (; look != Word.cl_brace; move()) {
             System.out.println(look);
 
