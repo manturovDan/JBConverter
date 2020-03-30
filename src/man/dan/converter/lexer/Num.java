@@ -4,7 +4,7 @@ public class Num extends Token {
     public final int value;
 
     protected Num(int val) {
-        super(Tagv.NUM);
+        super(Tag.NUM);
         value = val;
     }
 

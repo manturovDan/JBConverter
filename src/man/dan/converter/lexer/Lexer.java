@@ -120,8 +120,6 @@ public class Lexer {
             throw new Exception("Syntax Error");
         }
 
-        Token tok = new Token(peek);
-        peek = ' ';
-        return tok; //MAYBE DELETE
+        throw new Exception("Syntax Error");
     }
 }
