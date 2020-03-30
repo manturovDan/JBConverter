@@ -16,7 +16,14 @@ public class Lexer {
     }
 
     void readCh() {
-        peek = parsed.charAt(++curCh);
+        if (curCh == parsed.length() - 1)
+            peek = '\n';
+        else
+            peek = parsed.charAt(++curCh);
+    }
+
+    void cancelStep() {
+        curCh--;
     }
 
     boolean readCh(char c) {
@@ -32,9 +39,12 @@ public class Lexer {
         reserve(Word.filter);
         reserve(Word.map);
         reserve(Word.cl_brace);
+        reserve(Word.element);
     }
 
     public Token scan() throws Exception {
+        readCh();
+
         while (peek == ' ' || peek == '\t')
             readCh();
 
@@ -55,6 +65,14 @@ public class Lexer {
                 return Word.minus;
             case '*':
                 return Word.mul;
+            case '(':
+                return Word.op_bracket;
+            case ')':
+                return Word.cl_bracket;
+            case '}':
+                return Word.cl_brace;
+            case '\n':
+                return Word.EOS;
             case '%':
                 if (readCh('>') && readCh('%'))
                     return Word.conveyor;
@@ -75,6 +93,7 @@ public class Lexer {
 
                 readCh();
             } while (Character.isDigit(peek));
+            cancelStep();
 
             return new Num(val);
         }
@@ -89,12 +108,14 @@ public class Lexer {
 
             if (peek == '{') {
                 str.append(peek);
-                String s = str.toString();
+            } else
+                cancelStep();
 
-                Word w = words.get(s);
-                if (w != null)
-                    return w;
-            }
+            String s = str.toString();
+            Word w = words.get(s);
+
+            if (w != null)
+                return w;
 
             throw new Exception("Syntax Error");
         }

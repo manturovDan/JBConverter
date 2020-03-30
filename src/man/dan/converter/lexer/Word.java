@@ -23,7 +23,8 @@ public class Word extends Token {
         filter = new Word("filter{", Tag.FILTER),
         cl_brace = new Word("}", Tag.CL_BRACE),
         op_bracket = new Word("(", Tag.OP_BRACKET),
-        cl_bracket = new Word(")", Tag.CL_BRACKET);
+        cl_bracket = new Word(")", Tag.CL_BRACKET),
+        EOS = new Word("EOS", Tag.EOS);
     //and so on
 
     public String toString() {

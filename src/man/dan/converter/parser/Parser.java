@@ -2,6 +2,7 @@ package man.dan.converter.parser;
 
 import man.dan.converter.lexer.Lexer;
 import man.dan.converter.lexer.Token;
+import man.dan.converter.lexer.Word;
 
 public class Parser {
     protected Lexer lexer;
@@ -21,7 +22,7 @@ public class Parser {
     }
 
     public void expression() throws Exception {
-        while (true) {
+        while (look != Word.EOS) {
             System.out.println(look);
             move();
         }
