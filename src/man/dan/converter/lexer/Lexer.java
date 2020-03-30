@@ -83,13 +83,13 @@ public class Lexer {
             int add;
 
             do {
-                    if (val > Integer.MAX_VALUE / 10)
-                        throw new Exception("Syntax error");
+                if (val > Integer.MAX_VALUE / 10)
+                    throw new Exception("Syntax error");
 
-                    val *= 10;
-                    add = Character.digit(peek, 10);
-                    Num.checkOverflow(val, add);
-                    val += add;
+                val *= 10;
+                add = Character.digit(peek, 10);
+                Num.checkOverflow(val, add);
+                val += add;
 
                 readCh();
             } while (Character.isDigit(peek));
