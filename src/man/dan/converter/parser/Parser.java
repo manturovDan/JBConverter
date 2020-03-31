@@ -70,10 +70,29 @@ public class Parser {
         if (operator == Word.mul) {
             operands.add(new Multiple(left, right));
         }
-    }
-
-    protected void addNode(Token operator, Operator newNode) {
-
+        else if (operator == Word.minus) {
+            operands.add(new Minus(left, right));
+        }
+        else if (operator == Word.plus) {
+            operands.add(new Plus(left, right));
+        }
+        else if (operator == Word.greater) {
+            operands.add(new Greater(left, right));
+        }
+        else if (operator == Word.less) {
+            operands.add(new Less(left, right));
+        }
+        else if (operator == Word.equal) {
+            operands.add(new Equal(left, right));
+        }
+        else if (operator == Word.or) {
+            operands.add(new Or(left, right));
+        }
+        else if (operator == Word.and) {
+            operands.add(new And(left, right));
+        }
+        else
+            throw new Exception("SYNTAX ERROR");
     }
 
     public void expression() throws Exception {
@@ -89,13 +108,13 @@ public class Parser {
          */
         move();
         operands.clear();
-        for (; look != Word.cl_brace; move()) {
+        rec: for (; look != Word.cl_brace; move()) {
             System.out.println(look);
 
             if (look instanceof Num) {
                 operands.add(new Number(look));
             }
-            else if (look == Word.element) {
+            else if (look.equals(Word.element)) {
                 operands.add(new Element());
             }
             else if (allOperators.containsKey(look)) {
@@ -104,11 +123,33 @@ public class Parser {
 
                 while (!operators.isEmpty()) {
                     iterOperator = operators.getFirst();
-                    if (allOperators.get(curOperator) <= allOperators.get(iterOperator)) {
+
+                    if (allOperators.containsKey(iterOperator) && allOperators.get(curOperator) <= allOperators.get(iterOperator)) {
                         operators.pop();
-                        //addNode
+                        addNode(iterOperator);
+                    }
+                    else
+                        break;
+                }
+            }
+            else if (look.equals(Word.op_bracket)) {
+                operators.add((Word)look);
+            }
+            else if (look.equals(Word.cl_bracket)) {
+                Word popped;
+
+                while (!operators.isEmpty()) {
+                    popped = operators.pop();
+
+                    if (popped.equals(Word.op_bracket)) {
+                        continue rec;
+                    }
+                    else {
+                        addNode(popped);
                     }
                 }
+
+                throw new Exception("SYNTAX ERROR");
             }
         }
     }
