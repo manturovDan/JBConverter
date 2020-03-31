@@ -72,8 +72,8 @@ public class Parser {
     }
 
     protected void addNode(Token operator) throws Exception {
-        Node left = operands.pop();
         Node right = operands.pop();
+        Node left = operands.pop();
 
         if (operator == Word.mul) {
             operands.add(new Multiple(left, right));
@@ -126,9 +126,9 @@ public class Parser {
                 Word iterOperator;
 
                 while (!operators.isEmpty()) {
-                    iterOperator = operators.getFirst();
+                    iterOperator = operators.getLast();
 
-                    if (allOperators.containsKey(iterOperator) && allOperators.get(curOperator) <= allOperators.get(iterOperator)) {
+                    if (allOperators.get(curOperator) >= allOperators.get(iterOperator)) {
                         operators.pop();
                         addNode(iterOperator);
                     }
