@@ -4,5 +4,5 @@ public abstract class Operator extends Node {
     protected Node left;
     protected Node right;
 
-    protected static int priority;
+    abstract protected int getPriority();
 }

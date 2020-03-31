@@ -4,6 +4,9 @@ import man.dan.converter.lexer.Lexer;
 import man.dan.converter.lexer.Num;
 import man.dan.converter.lexer.Token;
 import man.dan.converter.lexer.Word;
+import man.dan.converter.tree.Element;
+import man.dan.converter.tree.Number;
+import man.dan.converter.tree.Operand;
 
 import java.util.*;
 
@@ -11,7 +14,7 @@ public class Parser {
     protected Lexer lexer;
     protected Token look;
 
-    protected LinkedList<Token> operands = new LinkedList<>();
+    protected ArrayDeque<Operand> operands = new ArrayDeque<>();
 
     protected static HashMap<Token, Integer> allOperators = new HashMap<Token, Integer>() {{
         put(Word.mul, 1);
@@ -23,6 +26,10 @@ public class Parser {
         put(Word.and, 5);
         put(Word.or, 6);
     }};
+
+    public static int getPriority(Word w) {
+        return allOperators.get(w);
+    }
 
     public Parser(Lexer l) throws Exception {
         lexer = l;
@@ -72,8 +79,11 @@ public class Parser {
         for (; look != Word.cl_brace; move()) {
             System.out.println(look);
 
-            if (look instanceof Num || look == Word.element) {
-                operands.add(look);
+            if (look instanceof Num) {
+                operands.add(new Number(look));
+            }
+            else if (look == Word.element) {
+                operands.add(new Element());
             }
             else if (allOperators.containsKey(look)) {
 
