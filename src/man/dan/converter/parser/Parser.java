@@ -40,16 +40,22 @@ public class Parser {
         look = lexer.scan();
     }
 
-    public void analysis() throws Exception {
+    public LinkedList<Call> analysis() throws Exception {
+        LinkedList<Call> callChain = new LinkedList<>();
+
         for (;;) {
             if (look == Word.filter) {
                 System.out.println("FILTER");
                 expression();
+                callChain.add(new FilterCall((Logic) operands.element()));
             }
             else if (look == Word.map) {
                 System.out.println("MAP");
                 expression();
+                callChain.add(new MapCall((Numeric) operands.element()));
             }
+            else
+                throw new Exception("Syntax Error");
 
             move();
 
@@ -61,6 +67,8 @@ public class Parser {
             System.out.println("PIPE");
             move();
         }
+
+        return callChain;
     }
 
     protected void addNode(Token operator) throws Exception {
