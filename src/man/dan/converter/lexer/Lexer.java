@@ -10,6 +10,7 @@ public class Lexer {
     protected String parsed;
     int curCh = -1;
     char peek = ' ';
+    protected boolean waitBinMinus = false;
 
     protected void reserve(Word w) {
         words.put(w.lexeme, w);
@@ -48,6 +49,10 @@ public class Lexer {
         while (peek == ' ' || peek == '\t')
             readCh();
 
+        boolean waitBinMinusCurrent = waitBinMinus;
+        waitBinMinus = false;
+        int sign = 1;
+
         switch (peek) {
             case '&':
                 return Word.and;
@@ -62,12 +67,19 @@ public class Lexer {
             case '+':
                 return Word.plus;
             case '-':
-                return Word.minus;
+                if (waitBinMinusCurrent)
+                    return Word.minus;
+                else { //unary minus
+                    sign = -1;
+                    readCh();
+                    break;
+                }
             case '*':
                 return Word.mul;
             case '(':
                 return Word.op_bracket;
             case ')':
+                waitBinMinus = true;
                 return Word.cl_bracket;
             case '}':
                 return Word.cl_brace;
@@ -94,6 +106,9 @@ public class Lexer {
                 readCh();
             } while (Character.isDigit(peek));
             cancelStep();
+            val *= sign;
+
+            waitBinMinus = true;
 
             return new Num(val);
         }
