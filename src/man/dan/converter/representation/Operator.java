@@ -1,6 +1,4 @@
-package man.dan.converter.tree;
-
-import man.dan.converter.lexer.Num;
+package man.dan.converter.representation;
 
 public abstract class Operator extends Node {
     protected Node left;

@@ -1,4 +1,4 @@
-package man.dan.converter.tree;
+package man.dan.converter.representation;
 
 import man.dan.converter.lexer.Num;
 import man.dan.converter.lexer.Token;

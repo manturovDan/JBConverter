@@ -4,8 +4,8 @@ import man.dan.converter.lexer.Lexer;
 import man.dan.converter.lexer.Num;
 import man.dan.converter.lexer.Token;
 import man.dan.converter.lexer.Word;
-import man.dan.converter.tree.*;
-import man.dan.converter.tree.Number;
+import man.dan.converter.representation.*;
+import man.dan.converter.representation.Number;
 
 import java.util.*;
 
@@ -96,16 +96,6 @@ public class Parser {
     }
 
     public void expression() throws Exception {
-        /*
-        Priority:
-        0) - unary
-        1) *
-        2) + - binary
-        3) > <
-        4) =
-        5) &
-        6) |
-         */
         move();
         operands.clear();
 
@@ -160,6 +150,5 @@ public class Parser {
                 throw new Exception("SYNTAX ERROR");
             addNode(popped);
         }
-        return;
     }
 }
