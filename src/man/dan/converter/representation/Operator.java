@@ -19,4 +19,7 @@ public abstract class Operator extends Node {
         left = l;
         right = r;
     }
+
+    public Node getLeft() { return left; }
+    public Node getRight() { return right; }
 }

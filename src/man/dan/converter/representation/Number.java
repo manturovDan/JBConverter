@@ -13,4 +13,6 @@ public class Number extends Operand {
     public Number(Token n) {
         val = ((Num)n).value;
     }
+
+    public int getVal() { return val; }
 }

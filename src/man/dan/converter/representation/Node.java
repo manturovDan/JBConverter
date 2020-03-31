@@ -6,4 +6,6 @@ public abstract class Node {
     public void setParent(Node p) {
         parent = p;
     }
+
+    public Node getParent() { return parent; }
 }

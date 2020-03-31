@@ -6,4 +6,9 @@ public class MapCall extends Call {
     public MapCall(Numeric v) {
         vertex = v;
     }
+
+    @Override
+    public Node getVertex() {
+        return (Node)vertex;
+    }
 }

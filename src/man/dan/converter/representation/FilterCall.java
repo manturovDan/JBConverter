@@ -6,4 +6,9 @@ public class FilterCall extends Call {
     public FilterCall(Logic v) {
         vertex = v;
     }
+
+    @Override
+    public Node getVertex() {
+        return (Node)vertex;
+    }
 }
