@@ -108,6 +108,8 @@ public class Parser {
          */
         move();
         operands.clear();
+
+        Word popped;
         rec: for (; look != Word.cl_brace; move()) {
             System.out.println(look);
 
@@ -136,8 +138,6 @@ public class Parser {
                 operators.add((Word)look);
             }
             else if (look.equals(Word.cl_bracket)) {
-                Word popped;
-
                 while (!operators.isEmpty()) {
                     popped = operators.pop();
 
@@ -151,6 +151,13 @@ public class Parser {
 
                 throw new Exception("SYNTAX ERROR");
             }
+        }
+
+        while(!operators.isEmpty()) {
+            popped = operators.pop();
+            if (look.equals(Word.op_bracket) || look.equals(Word.cl_bracket))
+                throw new Exception("SYNTAX ERROR");
+            addNode(popped);
         }
     }
 }
