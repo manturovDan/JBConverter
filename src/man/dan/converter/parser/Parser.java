@@ -101,6 +101,10 @@ public class Parser {
         }
         else
             throw new Exception("SYNTAX ERROR");
+
+
+        left.setParent(operands.getFirst());
+        right.setParent(operands.getFirst());
     }
 
     public void expression() throws Exception {
