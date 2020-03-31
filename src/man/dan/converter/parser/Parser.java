@@ -64,8 +64,8 @@ public class Parser {
     }
 
     protected void addNode(Token operator) throws Exception {
-        Node right = operands.pop();
         Node left = operands.pop();
+        Node right = operands.pop();
 
         if (operator == Word.mul) {
             operands.add(new Multiple(left, right));
@@ -133,6 +133,7 @@ public class Parser {
                     else
                         break;
                 }
+                operators.add(curOperator);
             }
             else if (look.equals(Word.op_bracket)) {
                 operators.add((Word)look);
@@ -159,5 +160,6 @@ public class Parser {
                 throw new Exception("SYNTAX ERROR");
             addNode(popped);
         }
+        return;
     }
 }
