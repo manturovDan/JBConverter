@@ -4,9 +4,8 @@ import man.dan.converter.lexer.Lexer;
 import man.dan.converter.lexer.Num;
 import man.dan.converter.lexer.Token;
 import man.dan.converter.lexer.Word;
-import man.dan.converter.tree.Element;
+import man.dan.converter.tree.*;
 import man.dan.converter.tree.Number;
-import man.dan.converter.tree.Operand;
 
 import java.util.*;
 
@@ -14,9 +13,10 @@ public class Parser {
     protected Lexer lexer;
     protected Token look;
 
-    protected ArrayDeque<Operand> operands = new ArrayDeque<>();
+    protected ArrayDeque<Node> operands = new ArrayDeque<>();
+    protected ArrayDeque<Word> operators = new ArrayDeque<>();
 
-    protected static HashMap<Token, Integer> allOperators = new HashMap<Token, Integer>() {{
+    protected static HashMap<Token, Integer> allOperators = new HashMap<>() {{
         put(Word.mul, 1);
         put(Word.plus, 2);
         put(Word.minus, 2);
@@ -63,6 +63,19 @@ public class Parser {
         }
     }
 
+    protected void addNode(Token operator) throws Exception {
+        Node right = operands.pop();
+        Node left = operands.pop();
+
+        if (operator == Word.mul) {
+            operands.add(new Multiple(left, right));
+        }
+    }
+
+    protected void addNode(Token operator, Operator newNode) {
+
+    }
+
     public void expression() throws Exception {
         /*
         Priority:
@@ -86,7 +99,16 @@ public class Parser {
                 operands.add(new Element());
             }
             else if (allOperators.containsKey(look)) {
+                Word curOperator = (Word)look;
+                Word iterOperator;
 
+                while (!operators.isEmpty()) {
+                    iterOperator = operators.getFirst();
+                    if (allOperators.get(curOperator) <= allOperators.get(iterOperator)) {
+                        operators.pop();
+                        //addNode
+                    }
+                }
             }
         }
     }
