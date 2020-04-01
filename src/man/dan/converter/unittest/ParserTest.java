@@ -26,7 +26,10 @@ class ParserTest {
         if (v1 instanceof Number && v2 instanceof Number && ((Number)v1).getVal() == ((Number)v2).getVal())
             return true;
 
-        return v1 !=  null && v2 !=  null && v1.getClass() == v2.getClass();
+        if (v1 !=  null && v2 != null && v1.getClass() == v2.getClass())
+            return true;
+        else
+            return false;
     }
 
     boolean compareSyntaxTrees(Node v1, Node v2) {
@@ -37,10 +40,14 @@ class ParserTest {
             if(!compareNode(v1.getParent(), v2.getParent()))
                 return false;
 
-            return compareSyntaxTrees(((Operator) v1).getLeft(), ((Operator) v2).getRight());
+            if (compareSyntaxTrees(((Operator) v1).getLeft(), ((Operator) v2).getLeft()) &&
+                    compareSyntaxTrees(((Operator) v1).getRight(), ((Operator) v2).getRight()))
+                return true;
+            else
+                return false;
         }
 
-        return false;
+        return true;
     }
 
     @Test
@@ -65,18 +72,18 @@ class ParserTest {
         plus2.setParent(mul2);
         ten.setParent(mul2);
 
+        Minus minus1 = new Minus(plus1, mul2);
+        plus1.setParent(minus1);
+        mul2.setParent(minus1);
+
         Number five = new Number(5);
-        Minus minus = new Minus(mul2, five);
-        mul2.setParent(minus);
-        five.setParent(minus);
-
-        Minus root = new Minus(plus1, minus);
-        plus1.setParent(root);
-        minus.setParent(root);
+        Minus root = new Minus(minus1, five);
+        five.setParent(root);
+        minus1.setParent(root);
 
 
 
-        String expr = " map{element+15*3-(element+4)*10-5}";
+        String expr = " map{ element+ 15*3- (element+  4)*10 - 5}";
 
         Lexer lex = new Lexer(expr);
         Parser parser = new Parser(lex);

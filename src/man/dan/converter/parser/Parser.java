@@ -72,8 +72,8 @@ public class Parser {
     }
 
     protected void addNode(Token operator) throws Exception {
-        Node right = operands.pop();
-        Node left = operands.pop();
+        Node right = operands.removeLast();
+        Node left = operands.removeLast();
 
         if (operator == Word.mul) {
             operands.add(new Multiple(left, right));
@@ -103,8 +103,8 @@ public class Parser {
             throw new Exception("SYNTAX ERROR");
 
 
-        left.setParent(operands.getFirst());
-        right.setParent(operands.getFirst());
+        left.setParent(operands.getLast());
+        right.setParent(operands.getLast());
     }
 
     public void expression() throws Exception {
@@ -128,8 +128,8 @@ public class Parser {
                 while (!operators.isEmpty()) {
                     iterOperator = operators.getLast();
 
-                    if (allOperators.get(curOperator) >= allOperators.get(iterOperator)) {
-                        operators.pop();
+                    if (allOperators.containsKey(iterOperator) && allOperators.get(curOperator) >= allOperators.get(iterOperator)) {
+                        operators.removeLast();
                         addNode(iterOperator);
                     }
                     else
@@ -142,7 +142,7 @@ public class Parser {
             }
             else if (look.equals(Word.cl_bracket)) {
                 while (!operators.isEmpty()) {
-                    popped = operators.pop();
+                    popped = operators.removeLast();
 
                     if (popped.equals(Word.op_bracket)) {
                         continue rec;
@@ -157,7 +157,7 @@ public class Parser {
         }
 
         while(!operators.isEmpty()) {
-            popped = operators.pop();
+            popped = operators.removeLast();
             if (look.equals(Word.op_bracket) || look.equals(Word.cl_bracket))
                 throw new Exception("SYNTAX ERROR");
             addNode(popped);
