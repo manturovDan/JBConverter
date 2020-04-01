@@ -1,6 +1,7 @@
 package man.dan.converter.unittest;
 
 import man.dan.converter.lexer.Lexer;
+import man.dan.converter.lexer.Num;
 import man.dan.converter.parser.Parser;
 import man.dan.converter.representation.Number;
 import man.dan.converter.representation.*;
@@ -12,12 +13,13 @@ import java.util.LinkedList;
 
 class Trees {
     public static Node root1;
+    public static Node root2;
 }
 
 class ParserTest {
     @BeforeAll
-    public static void initTrees() throws Exception {
-        /*first tree*/
+    public static void initTreeOne() throws Exception {
+        /*first tree element+ 15*3- (element+  4)*10 - 5 */
         Element el1 = new Element();
         Number fifteen = new Number(15);
         Number three = new Number(3);
@@ -49,8 +51,39 @@ class ParserTest {
 
         Trees.root1 = root;
         /*first tree*/
+    }
 
-        System.out.println("Before");
+    @BeforeAll
+    public static void initTreeTwo() throws Exception {
+        /*second tree  (element>-5)&3<element|3=-6*/
+        Element el1 = new Element();
+        Number minusFive = new Number(-5);
+        Greater gr1 = new Greater(el1, minusFive);
+        minusFive.setParent(gr1);
+        el1.setParent(gr1);
+
+        Number three = new Number(3);
+        Element el2 = new Element();
+        Less ls1 = new Less(three, el2);
+        three.setParent(ls1);
+        el2.setParent(ls1);
+
+        And and = new And(gr1, ls1);
+        gr1.setParent(and);
+        ls1.setParent(and);
+
+        Number three2 = new Number(3);
+        Number minusSix = new Number(-6);
+        Equal eq = new Equal(three2, minusSix);
+        three2.setParent(eq);
+        minusSix.setParent(eq);
+
+        Or or = new Or(and, eq);
+        and.setParent(or);
+        eq.setParent(or);
+
+        Trees.root2 = or;
+        /*second tree*/
     }
 
     @Test
@@ -101,7 +134,22 @@ class ParserTest {
 
         Assert.assertEquals(clf.size(), 1);
         Assert.assertTrue(clf.element() instanceof MapCall);
+        Node compVertex = clf.element().getVertex();
 
+        Assert.assertTrue(compareSyntaxTrees(root, compVertex));
+    }
+
+    @Test public void treeTestTwo() throws Exception {
+        Node root = Trees.root2;
+
+        String expr = "filter{((element>-5)&3<element|3=-6)}";
+
+        Lexer lex = new Lexer(expr);
+        Parser parser = new Parser(lex);
+        LinkedList<Call> clf = parser.analysis();
+
+        Assert.assertEquals(clf.size(), 1);
+        Assert.assertTrue(clf.element() instanceof FilterCall);
         Node compVertex = clf.element().getVertex();
 
         Assert.assertTrue(compareSyntaxTrees(root, compVertex));
