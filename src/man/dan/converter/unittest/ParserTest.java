@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
+import java.util.Map;
 
 class Trees {
     public static Node root1;
@@ -139,7 +140,8 @@ class ParserTest {
         Assert.assertTrue(compareSyntaxTrees(root, compVertex));
     }
 
-    @Test public void treeTestTwo() throws Exception {
+    @Test
+    public void treeTestTwo() throws Exception {
         Node root = Trees.root2;
 
         String expr = "filter{((element>-5)&3<element|3=-6)}";
@@ -153,5 +155,47 @@ class ParserTest {
         Node compVertex = clf.element().getVertex();
 
         Assert.assertTrue(compareSyntaxTrees(root, compVertex));
+    }
+
+    @Test
+    public void treesPairTest12() throws Exception {
+        Node root1 = Trees.root1;
+        Node root2 = Trees.root2;
+
+        String expr = " filter{((element> -5)&3<element |3=-6)} %>% map{ ( element+ 15*3- (element+  4)*10 - 5 ) } ";
+
+        Lexer lex = new Lexer(expr);
+        Parser parser = new Parser(lex);
+        LinkedList<Call> clf = parser.analysis();
+
+        Assert.assertEquals(clf.size(), 2);
+        Assert.assertTrue(clf.element() instanceof FilterCall);
+        Assert.assertTrue(clf.get(1) instanceof MapCall);
+        Node compVertex1 = clf.element().getVertex();
+        Node compVertex2 = clf.get(1).getVertex();
+
+        Assert.assertTrue(compareSyntaxTrees(root2, compVertex1));
+        Assert.assertTrue(compareSyntaxTrees(root1, compVertex2));
+    }
+
+    @Test
+    public void treesPairTest21() throws Exception {
+        Node root1 = Trees.root1;
+        Node root2 = Trees.root2;
+
+        String expr = " map{ ((( element+ 15*3- (element+  4)*10 - 5 ) ))}%>%filter{(((element> -5)&3<element |3=(-6)))}";
+
+        Lexer lex = new Lexer(expr);
+        Parser parser = new Parser(lex);
+        LinkedList<Call> clf = parser.analysis();
+
+        Assert.assertEquals(clf.size(), 2);
+        Assert.assertTrue(clf.element() instanceof MapCall);
+        Assert.assertTrue(clf.get(1) instanceof FilterCall);
+        Node compVertex1 = clf.element().getVertex();
+        Node compVertex2 = clf.get(1).getVertex();
+
+        Assert.assertTrue(compareSyntaxTrees(root1, compVertex1));
+        Assert.assertTrue(compareSyntaxTrees(root2, compVertex2));
     }
 }
