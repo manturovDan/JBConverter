@@ -1,5 +1,7 @@
 package man.dan.converter.transformer;
 
+import man.dan.converter.parser.TypeError;
+import man.dan.converter.representation.And;
 import man.dan.converter.representation.Call;
 import man.dan.converter.representation.FilterCall;
 import man.dan.converter.representation.MapCall;
@@ -60,8 +62,11 @@ public class Merger {
         System.out.println(chain);
     }
 
-    protected void mergeFF(FilterCall prev, FilterCall cur) {
-        //
+    protected void mergeFF(FilterCall prev, FilterCall cur) throws TypeError {
+        And and = new And(prev.getVertex(), cur.getVertex());
+        prev.getVertex().setParent(and);
+        cur.getVertex().setParent(and);
+        cur.changeVertex(and);
     }
 
     protected void mergeMM(MapCall prev, MapCall cur) {
