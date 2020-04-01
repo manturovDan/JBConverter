@@ -1,2 +1,3 @@
 filter{(element>10)}%>%filter{(element<20)}
 map{(element+10)}%>%filter{(element>10)}%>%map{(element*element)}
+filter{(element>10)}%>%map{element*element}%>%filter{(element>10)}%>%filter{(element>10)}%>%filter{(element>10)}%>%map{element*element}%>%map{element*element}%>%map{element*element}%>%filter{(element>10)}%>%map{element*element}%>%filter{(element>10)}%>%map{element*element}%>%map{element*element}%>%filter{(element>10)}
