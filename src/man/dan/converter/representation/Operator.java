@@ -26,11 +26,37 @@ public abstract class Operator extends Node {
     public Node getRight() { return right; }
 
     @Override
-    public Node cloneTree(Node p) throws CloneNotSupportedException {
+    public Node cloneTree(Node p) throws CloneNotSupportedException, TypeError {
         Operator clone = (Operator) this.clone();
         clone.setParent(p);
-        clone.left = left.cloneTree(clone);
-        clone.right = right.cloneTree(clone);
+        clone.setLeft(left.cloneTree(clone));
+        clone.setRight(right.cloneTree(clone));
         return clone;
+    }
+
+    public void setLeft(Node l) throws TypeError {
+        if (this instanceof GetsNumeric) {
+            if (!(l instanceof Numeric))
+                throw new TypeError();
+        }
+        if (this instanceof GetsLogic) {
+            if (!(l instanceof Logic))
+                throw new TypeError();
+        }
+
+        left = l;
+    }
+
+    public void setRight(Node r) throws TypeError {
+        if (this instanceof GetsNumeric) {
+            if (!(r instanceof Numeric))
+                throw new TypeError();
+        }
+        if (this instanceof GetsLogic) {
+            if (!(r instanceof Logic))
+                throw new TypeError();
+        }
+
+        right = r;
     }
 }

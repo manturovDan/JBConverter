@@ -80,7 +80,26 @@ public class Merger {
         //
     }
 
-    protected void gainTree(Node frame, Node growth) {
+    protected void gainTree(Node frame, Node growth, Boolean sacrificeFirst, boolean leftChild) throws CloneNotSupportedException, TypeError {
+        if (frame instanceof Element) {
+            Node parent = frame.getParent();
+            if (sacrificeFirst) {
+                sacrificeFirst = Boolean.FALSE;
+                System.out.println("USE OL ONCE");
+                growth.setParent(parent);
+            }
+            else {
+                growth = growth.cloneTree(parent);
+            }
 
+            if (parent != null) {
+                if (leftChild)
+                    ((Operator)parent).setLeft(growth);
+                else
+                    ((Operator)parent).setRight(growth);
+            }
+
+        }
+        else if ()
     }
 }
