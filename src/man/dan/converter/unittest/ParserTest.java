@@ -302,21 +302,27 @@ class ParserTest {
 
         Assert.assertEquals(clf.size(), 6);
 
-        /*ListIterator<Call> iter = clf.listIterator();
+        ListIterator<Call> iter = clf.listIterator();
         Call cl1 = iter.next();
         Call cl2 = iter.next();
         Call cl3 = iter.next();
         Call cl4 = iter.next();
+        Call cl5 = iter.next();
+        Call cl6 = iter.next();
 
         Assert.assertTrue(cl1 instanceof FilterCall);
-        Assert.assertTrue(cl2 instanceof MapCall);
+        Assert.assertTrue(cl2 instanceof FilterCall);
         Assert.assertTrue(cl3 instanceof FilterCall);
         Assert.assertTrue(cl4 instanceof FilterCall);
+        Assert.assertTrue(cl5 instanceof MapCall);
+        Assert.assertTrue(cl6 instanceof FilterCall);
 
-        Assert.assertTrue(compareSyntaxTrees(Trees.root2, cl1.getVertex()));
-        Assert.assertTrue(compareSyntaxTrees(Trees.root1, cl2.getVertex()));
-        Assert.assertTrue(compareSyntaxTrees(Trees.root3, cl3.getVertex()));
-        Assert.assertTrue(compareSyntaxTrees(Trees.root4, cl4.getVertex()));*/
+        Assert.assertTrue(compareSyntaxTrees(Trees.root4, cl1.getVertex()));
+        Assert.assertTrue(compareSyntaxTrees(Trees.root2, cl2.getVertex()));
+        Assert.assertTrue(compareSyntaxTrees(Trees.root2, cl3.getVertex()));
+        Assert.assertTrue(compareSyntaxTrees(Trees.root3, cl4.getVertex()));
+        Assert.assertTrue(compareSyntaxTrees(Trees.root1, cl5.getVertex()));
+        Assert.assertTrue(compareSyntaxTrees(Trees.root3, cl6.getVertex()));
     }
 
 }
