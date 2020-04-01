@@ -1,5 +1,6 @@
 package man.dan.converter.unittest;
 
+import com.sun.source.tree.Tree;
 import man.dan.converter.lexer.Lexer;
 import man.dan.converter.lexer.Num;
 import man.dan.converter.parser.Parser;
@@ -12,11 +13,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.Map;
 
 class Trees {
     public static Node root1;
     public static Node root2;
+    public static Node root3;
+    public static Node root4;
 }
 
 class ParserTest {
@@ -87,6 +91,66 @@ class ParserTest {
 
         Trees.root2 = or;
         /*second tree*/
+    }
+
+    @BeforeAll
+    public static void initTreeThree() throws TypeError {
+        /*third tree element*element*element+15>-800*19*/
+        Element el1 = new Element();
+        Element el2 = new Element();
+        Multiple mul1 = new Multiple(el1, el2);
+        el1.setParent(mul1);
+        el2.setParent(mul1);
+        Element el3 = new Element();
+        Multiple mul2 = new Multiple(mul1, el3);
+        el3.setParent(mul2);
+        mul1.setParent(mul2);
+        Number fifteen = new Number(15);
+        Plus plus = new Plus(mul2, fifteen);
+        mul2.setParent(plus);
+        fifteen.setParent(plus);
+
+        Number minus800 = new Number(-800);
+        Number nineteen = new Number(19);
+        Multiple mul3 = new Multiple(minus800, nineteen);
+        minus800.setParent(mul3);
+        nineteen.setParent(mul3);
+
+        Greater gr1 = new Greater(plus, mul3);
+        plus.setParent(gr1);
+        mul3.setParent(gr1);
+
+        Trees.root3 = gr1;
+        /*third tree*/
+    }
+
+    @BeforeAll
+    public static void initTreeFour() throws TypeError {
+        /*fourth tree element=element|-5*element>element*/
+        Element el1 = new Element();
+        Element el2 = new Element();
+        Equal eq = new Equal(el1, el2);
+        el1.setParent(eq);
+        el1.setParent(eq);
+
+        Number minusFive = new Number(-5);
+        Element el3 = new Element();
+        Multiple mul1 = new Multiple(minusFive, el3);
+        el3.setParent(mul1);
+        minusFive.setParent(mul1);
+
+        Element el4 = new Element();
+        Greater gr = new Greater(mul1, el4);
+        el4.setParent(gr);
+        mul1.setParent(gr);
+
+        Or or = new Or(eq, gr);
+        eq.setParent(or);
+        gr.setParent(or);
+
+        Trees.root4 = or;
+
+        /*fourth tree*/
     }
 
     @Test
@@ -200,4 +264,59 @@ class ParserTest {
         Assert.assertTrue(compareSyntaxTrees(root1, compVertex1));
         Assert.assertTrue(compareSyntaxTrees(root2, compVertex2));
     }
+
+    @Test
+    public void treesQuadrupleTest1234() throws SyntaxError, TypeError {
+        String expr = "map{ ((( element+ 15*3- (element+  4)*10 - 5 ) ))} %>% filter{(((element> -5)&3<element |3=(-6)))}%>% filter{element*element*element+15>-800*19}%>%filter{element=element|-5*element>element}";
+
+        Lexer lex = new Lexer(expr);
+        Parser parser = new Parser(lex);
+        LinkedList<Call> clf = parser.analysis();
+
+        Assert.assertEquals(clf.size(), 4);
+
+        ListIterator<Call> iter = clf.listIterator();
+        Call cl1 = iter.next();
+        Call cl2 = iter.next();
+        Call cl3 = iter.next();
+        Call cl4 = iter.next();
+
+        Assert.assertTrue(cl1 instanceof MapCall);
+        Assert.assertTrue(cl2 instanceof FilterCall);
+        Assert.assertTrue(cl3 instanceof FilterCall);
+        Assert.assertTrue(cl4 instanceof FilterCall);
+
+        Assert.assertTrue(compareSyntaxTrees(Trees.root1, cl1.getVertex()));
+        Assert.assertTrue(compareSyntaxTrees(Trees.root2, cl2.getVertex()));
+        Assert.assertTrue(compareSyntaxTrees(Trees.root3, cl3.getVertex()));
+        Assert.assertTrue(compareSyntaxTrees(Trees.root4, cl4.getVertex()));
+    }
+
+    @Test
+    public void treesSixEl422313() throws SyntaxError, TypeError {
+        String expr = "filter{(element=element)|-5*element>element} %>% filter{ (element>-5)&3<element|3=-6 } %>% filter{ (element>-5)&3<element|3=-6 }%>%filter{(((element))*element*element+15>-800*19)} %>% map{ ((( element+ 15*3- (element+  4)*10 - 5 ) ))} %>% filter{((element)*(element)*element+15>(-800*19))}";
+
+        Lexer lex = new Lexer(expr);
+        Parser parser = new Parser(lex);
+        LinkedList<Call> clf = parser.analysis();
+
+        Assert.assertEquals(clf.size(), 6);
+
+        /*ListIterator<Call> iter = clf.listIterator();
+        Call cl1 = iter.next();
+        Call cl2 = iter.next();
+        Call cl3 = iter.next();
+        Call cl4 = iter.next();
+
+        Assert.assertTrue(cl1 instanceof FilterCall);
+        Assert.assertTrue(cl2 instanceof MapCall);
+        Assert.assertTrue(cl3 instanceof FilterCall);
+        Assert.assertTrue(cl4 instanceof FilterCall);
+
+        Assert.assertTrue(compareSyntaxTrees(Trees.root2, cl1.getVertex()));
+        Assert.assertTrue(compareSyntaxTrees(Trees.root1, cl2.getVertex()));
+        Assert.assertTrue(compareSyntaxTrees(Trees.root3, cl3.getVertex()));
+        Assert.assertTrue(compareSyntaxTrees(Trees.root4, cl4.getVertex()));*/
+    }
+
 }
