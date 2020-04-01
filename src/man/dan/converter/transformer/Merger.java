@@ -56,7 +56,6 @@ public class Merger {
 
         }
 
-
         System.out.println(chain);
     }
 
