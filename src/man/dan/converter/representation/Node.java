@@ -8,4 +8,6 @@ public abstract class Node {
     }
 
     public Node getParent() { return parent; }
+
+    public abstract Node cloneTree(Node p) throws CloneNotSupportedException;
 }

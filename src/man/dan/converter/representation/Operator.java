@@ -24,4 +24,13 @@ public abstract class Operator extends Node {
 
     public Node getLeft() { return left; }
     public Node getRight() { return right; }
+
+    @Override
+    public Node cloneTree(Node p) throws CloneNotSupportedException {
+        Operator clone = (Operator) this.clone();
+        clone.setParent(p);
+        clone.left = left.cloneTree(clone);
+        clone.right = right.cloneTree(clone);
+        return clone;
+    }
 }

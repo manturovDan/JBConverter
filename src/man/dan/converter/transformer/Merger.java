@@ -1,16 +1,14 @@
 package man.dan.converter.transformer;
 
 import man.dan.converter.parser.TypeError;
-import man.dan.converter.representation.And;
-import man.dan.converter.representation.Call;
-import man.dan.converter.representation.FilterCall;
-import man.dan.converter.representation.MapCall;
+import man.dan.converter.representation.*;
 
 import java.util.LinkedList;
 import java.util.ListIterator;
 
 public class Merger {
-    LinkedList<Call> chain;
+    protected LinkedList<Call> chain;
+    protected Node elementNext = new Element();
 
     public Merger(LinkedList<Call> ch) {
         chain = ch;
@@ -80,5 +78,9 @@ public class Merger {
         }
         System.out.println("\n.");
         //
+    }
+
+    protected void gainTree(Node frame, Node growth) {
+
     }
 }
