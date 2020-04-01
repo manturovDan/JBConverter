@@ -17,7 +17,7 @@ public class Merger {
     public void transform() throws Exception {
         ListIterator<Call> iter = chain.listIterator();
 
-        //check empty list
+        //TODO check empty list
 
         Call previous;
         Call current = iter.next();
