@@ -36,7 +36,7 @@ public class Merger {
             }
             else if (previous instanceof MapCall && current instanceof FilterCall) {
 
-                mergeMF((MapCall)previous, (FilterCall) current, chain.listIterator(iter.nextIndex()-1));
+                mergeMF((MapCall)previous, (FilterCall) current, chain.listIterator(iter.nextIndex())); //maybe optimize with own list
             }
             else if (previous instanceof FilterCall && current instanceof MapCall) {
                 continue;
@@ -69,6 +69,11 @@ public class Merger {
     }
 
     protected void mergeMF(MapCall prev, FilterCall cur, ListIterator<Call> replIter) {
+        System.out.println(".");
+        while (replIter.hasNext()) {
+            System.out.print(replIter.next() + " ");
+        }
+        System.out.println("\n.");
         //
     }
 }
