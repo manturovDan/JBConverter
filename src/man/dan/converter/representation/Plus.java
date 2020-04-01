@@ -13,4 +13,9 @@ public class Plus extends Operator implements Numeric, GetsNumeric {
     protected int getPriority() {
         return Parser.getPriority(Word.plus);
     }
+
+    @Override
+    protected Plus clone() throws CloneNotSupportedException {
+        return (Plus) super.clone();
+    }
 }

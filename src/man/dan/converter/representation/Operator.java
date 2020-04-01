@@ -27,7 +27,7 @@ public abstract class Operator extends Node {
 
     @Override
     public Node cloneTree(Node p) throws CloneNotSupportedException, TypeError {
-        Operator clone = (Operator) this.clone();
+        Operator clone = this.clone();
         clone.setParent(p);
         clone.setLeft(left.cloneTree(clone));
         clone.setRight(right.cloneTree(clone));
@@ -58,5 +58,10 @@ public abstract class Operator extends Node {
         }
 
         right = r;
+    }
+
+    @Override
+    protected Operator clone() throws CloneNotSupportedException {
+        return (Operator)super.clone();
     }
 }

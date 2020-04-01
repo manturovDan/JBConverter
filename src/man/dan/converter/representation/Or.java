@@ -13,4 +13,9 @@ public class Or extends Operator implements Logic, GetsLogic {
     protected int getPriority() {
         return Parser.getPriority(Word.or);
     }
+
+    @Override
+    protected Or clone() throws CloneNotSupportedException {
+        return (Or)super.clone();
+    }
 }

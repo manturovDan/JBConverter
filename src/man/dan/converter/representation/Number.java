@@ -15,4 +15,11 @@ public class Number extends Operand {
     }
 
     public int getVal() { return val; }
+
+    @Override
+    protected Number clone() throws CloneNotSupportedException {
+        Number num = (Number)super.clone();
+        num.val = val;
+        return num;
+    }
 }

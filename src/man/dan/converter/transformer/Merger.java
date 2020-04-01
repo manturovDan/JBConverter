@@ -67,8 +67,8 @@ public class Merger {
         cur.changeVertex(and);
     }
 
-    protected void mergeMM(MapCall prev, MapCall cur) {
-        //
+    protected void mergeMM(MapCall prev, MapCall cur) throws TypeError, CloneNotSupportedException {
+        gainTree((Operator) cur.getVertex(), prev.getVertex());
     }
 
     protected void mergeMF(MapCall prev, FilterCall cur, ListIterator<Call> replIter) {
@@ -80,26 +80,25 @@ public class Merger {
         //
     }
 
-    protected void gainTree(Node frame, Node growth, Boolean sacrificeFirst, boolean leftChild) throws CloneNotSupportedException, TypeError {
-        if (frame instanceof Element) {
-            Node parent = frame.getParent();
-            if (sacrificeFirst) {
-                sacrificeFirst = Boolean.FALSE;
-                System.out.println("USE OL ONCE");
-                growth.setParent(parent);
-            }
-            else {
-                growth = growth.cloneTree(parent);
-            }
+    protected void gainTree(Operator frame, Node growth) throws CloneNotSupportedException, TypeError {
+        boolean freeLeft = true;
+        boolean freeRight = true;
 
-            if (parent != null) {
-                if (leftChild)
-                    ((Operator)parent).setLeft(growth);
-                else
-                    ((Operator)parent).setRight(growth);
-            }
-
+        if (frame.getLeft() instanceof Element) {
+            growth = growth.cloneTree(frame);
+            frame.setLeft(growth);
+            freeLeft = false;
         }
-        else if ()
+        if (frame.getRight() instanceof Element) {
+            growth = growth.cloneTree(frame);
+            frame.setRight(growth);
+            freeRight = false;
+        }
+
+        if (frame.getLeft() instanceof Operator && freeLeft)
+            gainTree((Operator) frame.getLeft(), growth);
+
+        if (frame.getRight() instanceof Operator && freeRight)
+            gainTree((Operator) frame.getRight(), growth);
     }
 }

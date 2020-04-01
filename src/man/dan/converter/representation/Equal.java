@@ -13,4 +13,9 @@ public class Equal extends Operator implements Logic, GetsNumeric {
     protected int getPriority() {
         return Parser.getPriority(Word.equal);
     }
+
+    @Override
+    protected Equal clone() throws CloneNotSupportedException {
+        return (Equal)super.clone();
+    }
 }
