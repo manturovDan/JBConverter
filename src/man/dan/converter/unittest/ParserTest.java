@@ -1,19 +1,58 @@
 package man.dan.converter.unittest;
 
-import com.sun.source.tree.AssertTree;
 import man.dan.converter.lexer.Lexer;
-import man.dan.converter.lexer.Num;
 import man.dan.converter.parser.Parser;
-import man.dan.converter.representation.*;
 import man.dan.converter.representation.Number;
+import man.dan.converter.representation.*;
 import org.junit.Assert;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 
-import static org.junit.jupiter.api.Assertions.*;
+class Trees {
+    public static Node root1;
+}
 
 class ParserTest {
+    @BeforeAll
+    public static void initTrees() throws Exception {
+        /*first tree*/
+        Element el1 = new Element();
+        Number fifteen = new Number(15);
+        Number three = new Number(3);
+        Multiple mul1 = new Multiple(fifteen, three);
+        three.setParent(mul1);
+        fifteen.setParent(mul1);
+        Plus plus1 = new Plus(el1, mul1);
+        el1.setParent(plus1);
+        mul1.setParent(plus1);
+
+        Element el2 = new Element();
+        Number four = new Number(4);
+        Plus plus2 = new Plus(el2, four);
+        el2.setParent(plus2);
+        four.setParent(plus2);
+        Number ten = new Number(10);
+        Multiple mul2 = new Multiple(plus2, ten);
+        plus2.setParent(mul2);
+        ten.setParent(mul2);
+
+        Minus minus1 = new Minus(plus1, mul2);
+        plus1.setParent(minus1);
+        mul2.setParent(minus1);
+
+        Number five = new Number(5);
+        Minus root = new Minus(minus1, five);
+        five.setParent(root);
+        minus1.setParent(root);
+
+        Trees.root1 = root;
+        /*first tree*/
+
+        System.out.println("Before");
+    }
+
     @Test
     public void testJUnit() {
         Assert.assertEquals(1, 1);
@@ -52,36 +91,7 @@ class ParserTest {
 
     @Test
     public void treeTestOne() throws Exception {
-        Element el1 = new Element();
-        Number fifteen = new Number(15);
-        Number three = new Number(3);
-        Multiple mul1 = new Multiple(fifteen, three);
-        three.setParent(mul1);
-        fifteen.setParent(mul1);
-        Plus plus1 = new Plus(el1, mul1);
-        el1.setParent(plus1);
-        mul1.setParent(plus1);
-
-        Element el2 = new Element();
-        Number four = new Number(4);
-        Plus plus2 = new Plus(el2, four);
-        el2.setParent(plus2);
-        four.setParent(plus2);
-        Number ten = new Number(10);
-        Multiple mul2 = new Multiple(plus2, ten);
-        plus2.setParent(mul2);
-        ten.setParent(mul2);
-
-        Minus minus1 = new Minus(plus1, mul2);
-        plus1.setParent(minus1);
-        mul2.setParent(minus1);
-
-        Number five = new Number(5);
-        Minus root = new Minus(minus1, five);
-        five.setParent(root);
-        minus1.setParent(root);
-
-
+        Node root = Trees.root1;
 
         String expr = " map{ element+ 15*3- (element+  4)*10 - 5}";
 
