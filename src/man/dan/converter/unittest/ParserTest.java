@@ -3,6 +3,8 @@ package man.dan.converter.unittest;
 import man.dan.converter.lexer.Lexer;
 import man.dan.converter.lexer.Num;
 import man.dan.converter.parser.Parser;
+import man.dan.converter.parser.SyntaxError;
+import man.dan.converter.parser.TypeError;
 import man.dan.converter.representation.Number;
 import man.dan.converter.representation.*;
 import org.junit.Assert;
@@ -19,7 +21,7 @@ class Trees {
 
 class ParserTest {
     @BeforeAll
-    public static void initTreeOne() throws Exception {
+    public static void initTreeOne() throws TypeError {
         /*first tree element+ 15*3- (element+  4)*10 - 5 */
         Element el1 = new Element();
         Number fifteen = new Number(15);
@@ -55,7 +57,7 @@ class ParserTest {
     }
 
     @BeforeAll
-    public static void initTreeTwo() throws Exception {
+    public static void initTreeTwo() throws TypeError {
         /*second tree  (element>-5)&3<element|3=-6*/
         Element el1 = new Element();
         Number minusFive = new Number(-5);
@@ -124,7 +126,7 @@ class ParserTest {
     }
 
     @Test
-    public void treeTestOne() throws Exception {
+    public void treeTestOne() throws SyntaxError, TypeError {
         Node root = Trees.root1;
 
         String expr = " map{ element+ 15*3- (element+  4)*10 - 5}";
@@ -141,7 +143,7 @@ class ParserTest {
     }
 
     @Test
-    public void treeTestTwo() throws Exception {
+    public void treeTestTwo() throws SyntaxError, TypeError {
         Node root = Trees.root2;
 
         String expr = "filter{((element>-5)&3<element|3=-6)}";
@@ -158,7 +160,7 @@ class ParserTest {
     }
 
     @Test
-    public void treesPairTest12() throws Exception {
+    public void treesPairTest12() throws SyntaxError, TypeError {
         Node root1 = Trees.root1;
         Node root2 = Trees.root2;
 
@@ -179,7 +181,7 @@ class ParserTest {
     }
 
     @Test
-    public void treesPairTest21() throws Exception {
+    public void treesPairTest21() throws SyntaxError, TypeError {
         Node root1 = Trees.root1;
         Node root2 = Trees.root2;
 

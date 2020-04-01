@@ -31,16 +31,16 @@ public class Parser {
         return allOperators.get(w);
     }
 
-    public Parser(Lexer l) throws Exception {
+    public Parser(Lexer l) throws SyntaxError {
         lexer = l;
         move();
     }
 
-    protected void move() throws Exception {
+    protected void move() throws SyntaxError {
         look = lexer.scan();
     }
 
-    public LinkedList<Call> analysis() throws Exception {
+    public LinkedList<Call> analysis() throws SyntaxError, TypeError {
         LinkedList<Call> callChain = new LinkedList<>();
 
         for (;;) {
@@ -55,14 +55,14 @@ public class Parser {
                 callChain.add(new MapCall((Numeric) operands.element()));
             }
             else
-                throw new Exception("Syntax Error");
+                throw new SyntaxError();
 
             move();
 
             if (look == Word.EOS)
                 break;
             else if (look != Word.conveyor)
-                throw new Exception("Syntax Error");
+                throw new SyntaxError();
 
             System.out.println("PIPE");
             move();
@@ -71,7 +71,7 @@ public class Parser {
         return callChain;
     }
 
-    protected void addNode(Token operator) throws Exception {
+    protected void addNode(Token operator) throws SyntaxError, TypeError {
         Node right = operands.removeLast();
         Node left = operands.removeLast();
 
@@ -100,14 +100,14 @@ public class Parser {
             operands.add(new And(left, right));
         }
         else
-            throw new Exception("SYNTAX ERROR");
+            throw new SyntaxError();
 
 
         left.setParent(operands.getLast());
         right.setParent(operands.getLast());
     }
 
-    public void expression() throws Exception {
+    public void expression() throws SyntaxError, TypeError {
         move();
         operands.clear();
 
@@ -152,14 +152,14 @@ public class Parser {
                     }
                 }
 
-                throw new Exception("SYNTAX ERROR");
+                throw new SyntaxError();
             }
         }
 
         while(!operators.isEmpty()) {
             popped = operators.removeLast();
             if (look.equals(Word.op_bracket) || look.equals(Word.cl_bracket))
-                throw new Exception("SYNTAX ERROR");
+                throw new SyntaxError();
             addNode(popped);
         }
     }

@@ -1,5 +1,7 @@
 package man.dan.converter.lexer;
 
+import man.dan.converter.parser.SyntaxError;
+
 import java.util.HashMap;
 import java.lang.*;
 
@@ -43,7 +45,7 @@ public class Lexer {
         reserve(Word.element);
     }
 
-    public Token scan() throws Exception {
+    public Token scan() throws SyntaxError {
         readCh();
 
         while (peek == ' ' || peek == '\t')
@@ -96,7 +98,7 @@ public class Lexer {
 
             do {
                 if (val > Integer.MAX_VALUE / 10)
-                    throw new Exception("Syntax error");
+                    throw new SyntaxError();
 
                 val *= 10;
                 add = Character.digit(peek, 10);
@@ -132,9 +134,9 @@ public class Lexer {
             if (w != null)
                 return w;
 
-            throw new Exception("Syntax Error");
+            throw new SyntaxError();
         }
 
-        throw new Exception("Syntax Error");
+        throw new SyntaxError();
     }
 }
