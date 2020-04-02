@@ -2,6 +2,7 @@ package man.dan.converter.transformer;
 
 import man.dan.converter.parser.TypeError;
 import man.dan.converter.representation.*;
+import man.dan.converter.representation.Number;
 
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -81,24 +82,23 @@ public class Merger {
     }
 
     protected void gainTree(Node frame, Node growth) throws CloneNotSupportedException, TypeError { //growth only Numeric
-        boolean freeLeft = true;
-        boolean freeRight = true;
+        if (frame == null || frame instanceof Number)
+            return;;
 
-        if (frame.getLeft() instanceof Element) {
-            growth = growth.cloneTree(frame);
-            frame.setLeft(growth);
-            freeLeft = false;
+        if (frame instanceof Element) {
+            Node repl = growth.cloneTree(frame.getParent());
+            if (frame.getParent() != null) {
+                if (((Operator)frame.getParent()).getLeft() == frame) {
+                    ((Operator)frame.getParent()).setLeft(repl);
+                }
+                else if (((Operator)frame.getParent()).getRight() == frame) {
+                    ((Operator)frame.getParent()).setRight(repl);
+                }
+            }
+            return;
         }
-        if (frame.getRight() instanceof Element) {
-            growth = growth.cloneTree(frame);
-            frame.setRight(growth);
-            freeRight = false;
-        }
 
-        if (frame.getLeft() instanceof Operator && freeLeft)
-            gainTree((Operator) frame.getLeft(), growth);
-
-        if (frame.getRight() instanceof Operator && freeRight)
-            gainTree((Operator) frame.getRight(), growth);
+        gainTree(((Operator)frame).getLeft(), growth);
+        gainTree(((Operator)frame).getRight(), growth);
     }
 }
