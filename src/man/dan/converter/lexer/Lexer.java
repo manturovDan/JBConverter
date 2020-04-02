@@ -18,9 +18,13 @@ public class Lexer {
         words.put(w.lexeme, w);
     }
 
-    void readCh() {
-        if (curCh == parsed.length() - 1)
+    void readCh() throws SyntaxError {
+        if (curCh == parsed.length() - 1) {
             peek = '\n';
+            ++curCh;
+        }
+        else if (curCh == parsed.length())
+            throw new SyntaxError();
         else
             peek = parsed.charAt(++curCh);
     }
@@ -29,7 +33,7 @@ public class Lexer {
         curCh--;
     }
 
-    boolean readCh(char c) {
+    boolean readCh(char c) throws SyntaxError {
         readCh();
         if (peek != c)
             return false;

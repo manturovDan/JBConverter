@@ -154,6 +154,8 @@ public class Parser {
 
                 throw new SyntaxError();
             }
+            else
+                throw new SyntaxError();
         }
 
         while(!operators.isEmpty()) {

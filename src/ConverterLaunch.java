@@ -11,4 +11,21 @@ public class ConverterLaunch  {
     public static void main(String[] args) throws Exception {
         System.out.println(Convert.conv(args[0]));
     }
+
+    public static class Convert {
+        public static String conv(String input) throws Exception {
+            try {
+                Lexer lex = new Lexer(input);
+                Parser parser = new Parser(lex);
+                LinkedList<Call> callChain = parser.analysis();
+                Merger merger = new Merger(callChain);
+                merger.transform();
+                return "";
+            } catch (SyntaxError s) {
+                return "Syntax Error";
+            } catch (TypeError t) {
+                return "Type Error";
+            }
+        }
+    }
 }
