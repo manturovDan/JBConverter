@@ -161,51 +161,68 @@ public class ErrorRecognizeTest {
     }
 
     @Test
-    public void expressionErr5() throws Exception {
+    public void expressionErr5() {
         String expr = "filter{ element+--15*3 > 10 }";
         waitSyntaxAnl(expr);
     }
 
-    /*
     @Test
-    public void expressionErr3() {
-        String expr = "filter{1==0} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element-} %>% map{element} ";
+    public void expressionErr6() {
+        String expr = "map{elemnt + 50}";
         waitSyntaxAnl(expr);
     }
 
     @Test
-    public void expressionErr3() {
-        String expr = "filter{1==0} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element-} %>% map{element} ";
+    public void expressionErr7() {
+        String expr = "map{(element + (50 - 4*) - 10)}";
         waitSyntaxAnl(expr);
     }
 
     @Test
-    public void expressionErr3() {
-        String expr = "filter{1==0} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element-} %>% map{element} ";
+    public void expressionErr8() {
+        String expr = "filter{element > 5000000000}";
         waitSyntaxAnl(expr);
     }
 
     @Test
-    public void expressionErr3() {
-        String expr = "filter{1==0} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element-} %>% map{element} ";
+    public void expressionErr9() {
+        String expr = "filter{element <> -99990}";
         waitSyntaxAnl(expr);
     }
 
     @Test
-    public void expressionErr3() {
-        String expr = "filter{1==0} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element-} %>% map{element} ";
+    public void expressionErr10() {
+        String expr = "filter{element > -5000000000}";
         waitSyntaxAnl(expr);
     }
 
     @Test
-    public void expressionErr3() {
-        String expr = "filter{1==0} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element-} %>% map{element} ";
+    public void expressionErr11() {
+        String expr = "filter{element+-21 > --599}";
         waitSyntaxAnl(expr);
     }
 
     @Test
-    public void expressionErr3() {
-        String expr = "filter{1==0} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element-} %>% map{element} ";
+    public void expressionErr12() {
+        String expr = "map {element+-21 * -599} %>% filter{element+21 > -599} %>% ";
         waitSyntaxAnl(expr);
-    }*/
+    }
+
+    @Test
+    public void expressionErr13() {
+        String expr = " %>% ";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void expressionErr14() {
+        String expr = " %>% map {element+-21 * -599}";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void expressionErr15() {
+        String expr = "  map {element+-21 * -599}%>% ";
+        waitSyntaxAnl(expr);
+    }
 }
