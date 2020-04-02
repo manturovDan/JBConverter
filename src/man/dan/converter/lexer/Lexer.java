@@ -21,6 +21,7 @@ public class Lexer {
     void readCh() throws SyntaxError {
         if (curCh == parsed.length() - 1) {
             peek = '\n';
+            curCh++;
         }
         else if (curCh == parsed.length())
             throw new SyntaxError();
