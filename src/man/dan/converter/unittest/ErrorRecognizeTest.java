@@ -65,6 +65,15 @@ public class ErrorRecognizeTest {
         }
     }
 
+    public void noErr(String expr) throws Exception {
+        Lexer lex = new Lexer(expr);
+        Parser parser = new Parser(lex);
+        LinkedList<Call> callChain = parser.analysis();
+        Merger merger = new Merger(callChain);
+        merger.transform();
+        Assert.assertTrue(true);
+    }
+
     //Syntax checks
 
     @Test
@@ -264,7 +273,85 @@ public class ErrorRecognizeTest {
 
     @Test
     public void typeErr1() {
-        String expr = "filter{element+-21>-599}";
+        String expr = "map{element+-21>-599}";
         waitTypeAnl(expr);
+    }
+
+    @Test
+    public void typeErr2() {
+        String expr = "filter{element+-21>-599}%>%filter{(1*2)}";
+        waitTypeAnl(expr);
+    }
+
+    @Test
+    public void typeErrAnd() {
+        String expr = "filter{element+-21>-599}%>%filter{(1<2)}%>%filter{element+-21&1=0}";
+        waitTypeAnl(expr);
+    }
+
+    @Test
+    public void typeCorrect() throws Exception {
+        String expr = "filter{element+-21>-599}%>%filter{(1<2)}%>%filter{element<-21&1=0}";
+        noErr(expr);
+    }
+
+    @Test
+    public void typeErrOr0() {
+        String expr = "filter{element+-21>-599}%>%filter{(1<2)}%>%filter{element+-21|1+0}";
+        waitTypeAnl(expr);
+    }
+
+    @Test
+    public void typeErrOr() {
+        String expr = "filter{element+-21>-599}%>%filter{(1<2)}%>%filter{element+-21|1=0}";
+        waitTypeAnl(expr);
+    }
+
+    @Test
+    public void typeOr() throws Exception {
+        String expr = "filter{element+-21>-599}%>%filter{(1<2)}%>%filter{element<-21|1=0}";
+        noErr(expr);
+    }
+
+    @Test
+    public void typeEqErr() {
+        String expr = "filter{element+-21>-599}%>%filter{(1<2)}%>%filter{element<-21|1=(1=2)}";
+        waitTypeAnl(expr);
+    }
+
+    @Test
+    public void typeGrErr() {
+        String expr = "filter{element+-21>(1>2)}%>%filter{(1<2)}%>%filter{element<-21|1=0}";
+        waitTypeAnl(expr);
+    }
+
+    @Test
+    public void typeLsErr() {
+        String expr = "filter{element+-21>-599}%>%filter{(1<(2=-1))}%>%filter{element<-21|1=(1=2)}";
+        waitTypeAnl(expr);
+    }
+
+    @Test
+    public void typePlusErr() {
+        String expr = "filter{element+(-21>-599)}%>%filter{(1<2)}%>%filter{element<-21|1=1-2}";
+        waitTypeAnl(expr);
+    }
+
+    @Test
+    public void typeMinusErr() {
+        String expr = "filter{(-21>-601)-element+1}%>%filter{(1<2)}%>%filter{element<-21|1=1-2}";
+        waitTypeAnl(expr);
+    }
+
+    @Test
+    public void typeMulErr() {
+        String expr = "filter{element+-21>-599}%>%filter{(1<2*(0=4))}%>%filter{element<-21|1=0}";
+        waitTypeAnl(expr);
+    }
+
+    @Test
+    public void allOk() throws Exception {
+        String expr = "filter{(element>10)}%>%map{element*element}%>%filter{(element>10&element*element+15<4|3=1)}%>%filter{(element=1)|1=0}%>%filter{(element>10)}%>%map{element*element}%>%map{element*element}%>%map{element*element}%>%filter{(element>10)}%>%map{element*element}%>%filter{(element>10)}%>%map{element*element}%>%map{element*element}%>%filter{(element>10)}";
+        noErr(expr);
     }
 }

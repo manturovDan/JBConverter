@@ -47,12 +47,22 @@ public class Parser {
             if (look == Word.filter) {
                 System.out.println("FILTER");
                 expression();
+                try {
                 callChain.add(new FilterCall((Logic) operands.element()));
+                }
+                catch (ClassCastException c) {
+                    throw new TypeError();
+                }
             }
             else if (look == Word.map) {
                 System.out.println("MAP");
                 expression();
-                callChain.add(new MapCall((Numeric) operands.element()));
+                try {
+                    callChain.add(new MapCall((Numeric) operands.element()));
+                }
+                catch (ClassCastException c) {
+                    throw new TypeError();
+                }
             }
             else
                 throw new SyntaxError();
