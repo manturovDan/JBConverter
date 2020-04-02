@@ -72,8 +72,15 @@ public class Parser {
     }
 
     protected void addNode(Token operator) throws SyntaxError, TypeError {
-        Node right = operands.removeLast();
-        Node left = operands.removeLast();
+        Node right;
+        Node left;
+
+        try {
+            right = operands.removeLast();
+            left = operands.removeLast();
+        } catch (NoSuchElementException e) {
+            throw new SyntaxError();
+        }
 
         if (operator == Word.mul) {
             operands.add(new Multiple(left, right));

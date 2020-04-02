@@ -3,6 +3,7 @@ package man.dan.converter.unittest;
 import man.dan.converter.lexer.Lexer;
 import man.dan.converter.parser.Parser;
 import man.dan.converter.parser.SyntaxError;
+import man.dan.converter.parser.TypeError;
 import man.dan.converter.representation.Call;
 import man.dan.converter.transformer.Merger;
 import org.junit.Assert;
@@ -45,6 +46,21 @@ public class ErrorRecognizeTest {
             Merger merger = new Merger(callChain);
             merger.transform();
         } catch (SyntaxError s) {
+            Assert.assertTrue(true);
+        } catch (Exception e) {
+            Assert.fail();
+        }
+    }
+
+    public void waitTypeMerge(String expr) {
+        Lexer lex = new Lexer(expr);
+        try {
+            Parser parser = new Parser(lex);
+            LinkedList<Call> callChain = parser.analysis();
+            Assert.fail();
+            Merger merger = new Merger(callChain);
+            merger.transform();
+        } catch (TypeError s) {
             Assert.assertTrue(true);
         } catch (Exception e) {
             Assert.fail();
@@ -108,6 +124,24 @@ public class ErrorRecognizeTest {
     @Test
     public void chainErr4() {
         String expr = "filter{} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element} %>% map{element} ";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void expressionErr1() {
+        String expr = "filter{1=0} %>%  filter{ element+ 15*3- (element+  4))*10 - 5 > 10 } %>% map {element} %>% map{element} ";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void expressionErr2() {
+        String expr = "filter{1=0} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element-} %>% map{element} ";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void expressionErr3() {
+        String expr = "filter{1==0} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element-} %>% map{element} ";
         waitSyntaxAnl(expr);
     }
 }
