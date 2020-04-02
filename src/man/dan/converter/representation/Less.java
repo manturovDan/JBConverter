@@ -18,4 +18,9 @@ public class Less extends Operator implements Logic, GetsNumeric {
     protected Less clone() throws CloneNotSupportedException {
         return (Less)super.clone();
     }
+
+    @Override
+    public String toString() {
+        return "<";
+    }
 }

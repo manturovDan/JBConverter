@@ -21,6 +21,6 @@ public class Multiple extends Operator implements Numeric, GetsNumeric {
 
     @Override
     public String toString() {
-        return "-";
+        return "*";
     }
 }

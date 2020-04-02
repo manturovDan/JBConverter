@@ -1,8 +1,6 @@
 package man.dan.converter.transformer;
 
-import man.dan.converter.representation.Call;
-import man.dan.converter.representation.Node;
-import man.dan.converter.representation.Operator;
+import man.dan.converter.representation.*;
 
 import java.util.LinkedList;
 
@@ -17,7 +15,11 @@ public class MakeString {
             else
                 arrow = true;
 
-            constructAns.append(printNode(tree.getVertex()));
+            if (tree instanceof FilterCall)
+                constructAns.append("filter{");
+            else if (tree instanceof MapCall)
+                constructAns.append("map{");
+            constructAns.append(printNode(tree.getVertex())).append("}");
         }
 
         return constructAns.toString();
@@ -35,7 +37,7 @@ public class MakeString {
             Node leftChild;
             boolean brackets = false;
             leftChild = ((Operator) vertex).getLeft();
-            if (leftChild instanceof Operator && ((Operator) leftChild).getPriority() < operatorPrior)
+            if (leftChild instanceof Operator && ((Operator) leftChild).getPriority() > operatorPrior)
                 brackets = true;
             if(brackets)
                 res.append("(");
@@ -50,7 +52,7 @@ public class MakeString {
             Node rightChild;
             boolean brackets = false;
             rightChild = ((Operator) vertex).getRight();
-            if (rightChild instanceof Operator && ((Operator) rightChild).getPriority() < operatorPrior)
+            if (rightChild instanceof Operator && ((Operator) rightChild).getPriority() > operatorPrior)
                 brackets = true;
             if(brackets)
                 res.append("(");
