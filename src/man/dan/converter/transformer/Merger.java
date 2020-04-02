@@ -8,7 +8,7 @@ import java.util.ListIterator;
 
 public class Merger {
     protected LinkedList<Call> chain;
-    protected Node elementNext = new Element();
+    protected Node elementReplacement;
 
     public Merger(LinkedList<Call> ch) {
         chain = ch;
@@ -21,7 +21,13 @@ public class Merger {
 
         Call previous;
         Call current = iter.next();
+
         while (iter.hasNext()) {
+            if (elementReplacement != null && !(elementReplacement instanceof Element)) {
+                gainTree(current.getVertex(), elementReplacement);
+                if (current instanceof MapCall)
+                    elementReplacement = null;
+            }
 
             System.out.println(chain);
 
@@ -36,7 +42,7 @@ public class Merger {
             }
             else if (previous instanceof MapCall && current instanceof FilterCall) {
 
-                mergeMF((MapCall)previous, (FilterCall) current, chain.listIterator(iter.nextIndex())); //maybe optimize with own list
+                mergeMF((MapCall)previous, (FilterCall) current);
             }
             else if (previous instanceof FilterCall && current instanceof MapCall) {
                 continue;
@@ -67,19 +73,14 @@ public class Merger {
     }
 
     protected void mergeMM(MapCall prev, MapCall cur) throws TypeError, CloneNotSupportedException {
-        gainTree((Operator) cur.getVertex(), prev.getVertex());
+        elementReplacement = prev.getVertex();
     }
 
-    protected void mergeMF(MapCall prev, FilterCall cur, ListIterator<Call> replIter) {
-        System.out.println(".");
-        while (replIter.hasNext()) {
-            System.out.print(replIter.next() + " ");
-        }
-        System.out.println("\n.");
-        //
+    protected void mergeMF(MapCall prev, FilterCall cur) {
+        elementReplacement = prev.getVertex();
     }
 
-    protected void gainTree(Operator frame, Node growth) throws CloneNotSupportedException, TypeError {
+    protected void gainTree(Node frame, Node growth) throws CloneNotSupportedException, TypeError { //growth only Numeric
         boolean freeLeft = true;
         boolean freeRight = true;
 
