@@ -24,26 +24,24 @@ public class Merger {
         Call current = iter.next();
 
         while (iter.hasNext()) {
-            if (elementReplacement != null && !(elementReplacement instanceof Element)) {
-                gainTree(current.getVertex(), elementReplacement);
-                if (current instanceof MapCall)
-                    elementReplacement = null;
-            }
-
             System.out.println(chain);
 
             previous = current;
             current = iter.next();
+
+            gainRun(current);
+
 
             if (previous instanceof FilterCall && current instanceof FilterCall) {
                 mergeFF((FilterCall) previous, (FilterCall) current);
             }
             else if (previous instanceof MapCall && current instanceof MapCall) {
                 mergeMM((MapCall)previous, (MapCall) current);
+                gainRun(current);
             }
             else if (previous instanceof MapCall && current instanceof FilterCall) {
-
                 mergeMF((MapCall)previous, (FilterCall) current);
+                gainRun(current);
             }
             else if (previous instanceof FilterCall && current instanceof MapCall) {
                 continue;
@@ -57,13 +55,19 @@ public class Merger {
             if (iter.hasPrevious())
                 iter.previous();
 
-            if (iter.hasPrevious())
-                iter.previous();
             current = iter.next();
 
         }
 
         System.out.println(chain);
+    }
+
+    protected void gainRun(Call current) throws TypeError, CloneNotSupportedException {
+        if (elementReplacement != null && !(elementReplacement instanceof Element)) {
+            gainTree(current.getVertex(), elementReplacement);
+            if (current instanceof MapCall)
+                elementReplacement = null;
+        }
     }
 
     protected void mergeFF(FilterCall prev, FilterCall cur) throws TypeError {
@@ -83,7 +87,7 @@ public class Merger {
 
     protected void gainTree(Node frame, Node growth) throws CloneNotSupportedException, TypeError { //growth only Numeric
         if (frame == null || frame instanceof Number)
-            return;;
+            return;
 
         if (frame instanceof Element) {
             Node repl = growth.cloneTree(frame.getParent());
