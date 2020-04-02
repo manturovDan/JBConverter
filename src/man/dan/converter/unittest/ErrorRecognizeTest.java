@@ -68,6 +68,15 @@ public class ErrorRecognizeTest {
     }
 
     @Test
+    public void subjErr0() {
+        String expr = "   ";
+        waitSyntaxAnl(expr);
+
+        String expr2 = "";
+        waitSyntaxAnl(expr2);
+    }
+
+    @Test
     public void subjErr1() {
         String expr = " mapppp{ element+ 15*3- (element+  4)*10 - 5}";
         waitSyntaxParse(expr);
@@ -93,7 +102,7 @@ public class ErrorRecognizeTest {
 
     @Test
     public void trickErr1() {
-        String expr = " filter{ element+ 15*3- map {(element+  4)}*10 - 5 > 10 } ";
+        String expr = " filter{ element+ 15*3- map{(element+  4)}*10 - 5 > 10 } ";
         waitSyntaxAnl(expr);
     }
 
@@ -105,37 +114,62 @@ public class ErrorRecognizeTest {
 
     @Test
     public void chainErr1() {
-        String expr = " filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } >>>> map {element} ";
+        String expr = " filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } >>>> map{element} ";
         waitSyntaxAnl(expr);
     }
 
     @Test
     public void chainErr2() {
-        String expr = " filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% %>% map {element} ";
+        String expr = " filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% %>% map{element} ";
         waitSyntaxAnl(expr);
     }
 
     @Test
     public void chainErr3() {
-        String expr = " filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element} %>% map{} ";
+        String expr = " filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map{element} %>% map{} ";
         waitSyntaxAnl(expr);
     }
 
     @Test
     public void chainErr4() {
-        String expr = "filter{} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element} %>% map{element} ";
+        String expr = "filter{} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map{element} %>% map{element} ";
         waitSyntaxAnl(expr);
     }
 
     @Test
     public void expressionErr1() {
-        String expr = "filter{1=0} %>%  filter{ element+ 15*3- (element+  4))*10 - 5 > 10 } %>% map {element} %>% map{element} ";
+        String expr = "filter{1=0} %>%  filter{ element+ 15*3- (element+  4))*10 - 5 > 10 } %>% map{element} %>% map{element} ";
         waitSyntaxAnl(expr);
     }
 
     @Test
     public void expressionErr2() {
-        String expr = "filter{1=0} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element-} %>% map{element} ";
+        String expr = "filter{1=0} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map{element-} %>% map{element} ";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void expressionErr3() {
+        String expr = "filter{1==0} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map{element-} %>% map{element} ";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void expressionErr4() {
+        String expr = "filter{1=0} %>%  filter{ ( element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map{element-} %>% map{element} ";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void expressionErr5() throws Exception {
+        String expr = "filter{ element+--15*3 > 10 }";
+        waitSyntaxAnl(expr);
+    }
+
+    /*
+    @Test
+    public void expressionErr3() {
+        String expr = "filter{1==0} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element-} %>% map{element} ";
         waitSyntaxAnl(expr);
     }
 
@@ -144,4 +178,34 @@ public class ErrorRecognizeTest {
         String expr = "filter{1==0} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element-} %>% map{element} ";
         waitSyntaxAnl(expr);
     }
+
+    @Test
+    public void expressionErr3() {
+        String expr = "filter{1==0} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element-} %>% map{element} ";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void expressionErr3() {
+        String expr = "filter{1==0} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element-} %>% map{element} ";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void expressionErr3() {
+        String expr = "filter{1==0} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element-} %>% map{element} ";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void expressionErr3() {
+        String expr = "filter{1==0} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element-} %>% map{element} ";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void expressionErr3() {
+        String expr = "filter{1==0} %>%  filter{ element+ 15*3- (element+  4)*10 - 5 > 10 } %>% map {element-} %>% map{element} ";
+        waitSyntaxAnl(expr);
+    }*/
 }

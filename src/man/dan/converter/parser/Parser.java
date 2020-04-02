@@ -68,6 +68,9 @@ public class Parser {
             move();
         }
 
+        if (callChain.size() == 0)
+            throw  new SyntaxError();
+
         return callChain;
     }
 

@@ -22,4 +22,8 @@ public class Number extends Operand {
         num.val = val;
         return num;
     }
+
+    public void setVal(int v) {
+        val = v;
+    }
 }

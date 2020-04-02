@@ -162,8 +162,12 @@ class ParserTest {
         if (v1 == null && v2 == null)
             return true;
 
-        if (v1 instanceof Number && v2 instanceof Number && ((Number)v1).getVal() == ((Number)v2).getVal())
-            return true;
+        if ((v1 instanceof Number) && (v2 instanceof Number)) {
+            if ((((Number) v1).getVal() == ((Number) v2).getVal()))
+                return true;
+            else
+                return false;
+        }
 
         if (v1 !=  null && v2 != null && v1.getClass() == v2.getClass())
             return true;
@@ -190,6 +194,26 @@ class ParserTest {
     }
 
     @Test
+    public void treeTestZero() throws SyntaxError, TypeError {
+        Node root = Trees.root1;
+        ((Number)(((Operator)root).getRight())).setVal(-5);
+
+        String expr = " map{ element+ 15*3- (element+  4)*10 - -5}";
+
+        Lexer lex = new Lexer(expr);
+        Parser parser = new Parser(lex);
+        LinkedList<Call> clf = parser.analysis();
+
+        Assert.assertEquals(clf.size(), 1);
+        Assert.assertTrue(clf.element() instanceof MapCall);
+        Node compVertex = clf.element().getVertex();
+
+        Assert.assertTrue(compareSyntaxTrees(root, compVertex));
+
+        ((Number)(((Operator)root).getRight())).setVal(5);
+    }
+
+    @Test
     public void treeTestOne() throws SyntaxError, TypeError {
         Node root = Trees.root1;
 
@@ -204,6 +228,23 @@ class ParserTest {
         Node compVertex = clf.element().getVertex();
 
         Assert.assertTrue(compareSyntaxTrees(root, compVertex));
+    }
+
+    @Test
+    public void treeTestNotEqual() throws SyntaxError, TypeError {
+        Node root = Trees.root1;
+
+        String expr = " map{ element+ -15*3- (element+  4)*10 - 5}";
+
+        Lexer lex = new Lexer(expr);
+        Parser parser = new Parser(lex);
+        LinkedList<Call> clf = parser.analysis();
+
+        Assert.assertEquals(clf.size(), 1);
+        Assert.assertTrue(clf.element() instanceof MapCall);
+        Node compVertex = clf.element().getVertex();
+
+        Assert.assertFalse(compareSyntaxTrees(root, compVertex));
     }
 
     @Test
