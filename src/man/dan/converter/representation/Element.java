@@ -5,4 +5,9 @@ public class Element extends Operand {
     protected Element clone() throws CloneNotSupportedException {
         return (Element) super.clone();
     }
+
+    @Override
+    public String toString() {
+        return "element";
+    }
 }

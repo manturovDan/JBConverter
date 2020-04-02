@@ -10,12 +10,17 @@ public class Or extends Operator implements Logic, GetsLogic {
     }
 
     @Override
-    protected int getPriority() {
+    public int getPriority() {
         return Parser.getPriority(Word.or);
     }
 
     @Override
     protected Or clone() throws CloneNotSupportedException {
         return (Or)super.clone();
+    }
+
+    @Override
+    public String toString() {
+        return "|";
     }
 }

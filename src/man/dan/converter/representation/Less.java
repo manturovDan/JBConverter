@@ -10,7 +10,7 @@ public class Less extends Operator implements Logic, GetsNumeric {
     }
 
     @Override
-    protected int getPriority() {
+    public int getPriority() {
         return Parser.getPriority(Word.less);
     }
 

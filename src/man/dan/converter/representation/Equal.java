@@ -10,12 +10,17 @@ public class Equal extends Operator implements Logic, GetsNumeric {
     }
 
     @Override
-    protected int getPriority() {
+    public int getPriority() {
         return Parser.getPriority(Word.equal);
     }
 
     @Override
     protected Equal clone() throws CloneNotSupportedException {
         return (Equal)super.clone();
+    }
+
+    @Override
+    public String toString() {
+        return "=";
     }
 }

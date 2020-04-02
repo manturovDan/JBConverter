@@ -6,7 +6,7 @@ public abstract class Operator extends Node {
     protected Node left;
     protected Node right;
 
-    abstract protected int getPriority();
+    abstract public int getPriority();
 
     public Operator(Node l, Node r) throws TypeError {
         if (this instanceof GetsNumeric) {

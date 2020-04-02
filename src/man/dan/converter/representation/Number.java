@@ -26,4 +26,9 @@ public class Number extends Operand {
     public void setVal(int v) {
         val = v;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(getVal());
+    }
 }

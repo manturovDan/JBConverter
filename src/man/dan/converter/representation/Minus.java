@@ -10,12 +10,17 @@ public class Minus extends Operator implements Numeric, GetsNumeric {
     }
 
     @Override
-    protected int getPriority() {
+    public int getPriority() {
         return Parser.getPriority(Word.minus);
     }
 
     @Override
     protected Minus clone() throws CloneNotSupportedException {
         return (Minus)super.clone();
+    }
+
+    @Override
+    public String toString() {
+        return "-";
     }
 }

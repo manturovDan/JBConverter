@@ -10,12 +10,17 @@ public class Plus extends Operator implements Numeric, GetsNumeric {
     }
 
     @Override
-    protected int getPriority() {
+    public int getPriority() {
         return Parser.getPriority(Word.plus);
     }
 
     @Override
     protected Plus clone() throws CloneNotSupportedException {
         return (Plus) super.clone();
+    }
+
+    @Override
+    public String toString() {
+        return "+";
     }
 }
