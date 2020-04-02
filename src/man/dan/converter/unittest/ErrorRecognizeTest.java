@@ -222,7 +222,41 @@ public class ErrorRecognizeTest {
 
     @Test
     public void expressionErr15() {
-        String expr = "  map{element+-21*-599}%>%";
+        String expr = "map{element+-21*-599}%>%";
+        waitSyntaxAnl(expr);
+    }
+
+    //No spaces
+
+    @Test
+    public void spaceErr1() {
+        String expr = "  map{element+-21*-599}";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void spaceErr2() {
+        String expr = "filter{(element>10)} %>% filter{(element<20)}";
+        waitSyntaxAnl(expr);
+    }
+
+
+    @Test
+    public void spaceErr3() {
+        String expr = "filter{(element>10)}%>%filter{(element<20)} ";
+        waitSyntaxAnl(expr);
+    }
+
+
+    @Test
+    public void spaceErr4() {
+        String expr = "map{ element*5 }%>%map{ element * element+element}%>%map{(element+1)* element }";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void spaceErr5() {
+        String expr = "map{element*5}%>%map{element*element+element}%>%map {(element+1)*element} ";
         waitSyntaxAnl(expr);
     }
 
