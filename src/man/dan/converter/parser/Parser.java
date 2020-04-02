@@ -164,5 +164,8 @@ public class Parser {
                 throw new SyntaxError();
             addNode(popped);
         }
+
+        if (operands.isEmpty())
+            throw new SyntaxError();
     }
 }
