@@ -198,7 +198,7 @@ class ParserTest {
         Node root = Trees.root1;
         ((Number)(((Operator)root).getRight())).setVal(-5);
 
-        String expr = " map{ element+ 15*3- (element+  4)*10 - -5}";
+        String expr = "map{element+15*3-(element+4)*10--5}";
 
         Lexer lex = new Lexer(expr);
         Parser parser = new Parser(lex);
@@ -217,7 +217,7 @@ class ParserTest {
     public void treeTestOne() throws SyntaxError, TypeError {
         Node root = Trees.root1;
 
-        String expr = " map{ element+ 15*3- (element+  4)*10 - 5}";
+        String expr = "map{element+15*3-(element+4)*10-5}";
 
         Lexer lex = new Lexer(expr);
         Parser parser = new Parser(lex);
@@ -234,7 +234,7 @@ class ParserTest {
     public void treeTestNotEqual() throws SyntaxError, TypeError {
         Node root = Trees.root1;
 
-        String expr = " map{ element+ -15*3- (element+  4)*10 - 5}";
+        String expr = "map{element+-15*3-(element+4)*10-5}";
 
         Lexer lex = new Lexer(expr);
         Parser parser = new Parser(lex);
@@ -269,7 +269,7 @@ class ParserTest {
         Node root1 = Trees.root1;
         Node root2 = Trees.root2;
 
-        String expr = " filter{((element> -5)&3<element |3=-6)} %>% map{ ( element+ 15*3- (element+  4)*10 - 5 ) } ";
+        String expr = "filter{((element>-5)&3<element|3=-6)}%>%map{(element+15*3-(element+4)*10-5)}";
 
         Lexer lex = new Lexer(expr);
         Parser parser = new Parser(lex);
@@ -290,7 +290,7 @@ class ParserTest {
         Node root1 = Trees.root1;
         Node root2 = Trees.root2;
 
-        String expr = " map{ ((( element+ 15*3- (element+  4)*10 - 5 ) ))}%>%filter{(((element> -5)&3<element |3=(-6)))}";
+        String expr = "map{(((element+15*3-(element+4)*10-5)))}%>%filter{(((element>-5)&3<element|3=(-6)))}";
 
         Lexer lex = new Lexer(expr);
         Parser parser = new Parser(lex);
@@ -308,7 +308,7 @@ class ParserTest {
 
     @Test
     public void treesQuadrupleTest1234() throws SyntaxError, TypeError {
-        String expr = "map{ ((( element+ 15*3- (element+  4)*10 - 5 ) ))} %>% filter{(((element> -5)&3<element |3=(-6)))}%>% filter{element*element*element+15>-800*19}%>%filter{element=element|-5*element>element}";
+        String expr = "map{(((element+15*3-(element+4)*10-5)))}%>%filter{(((element>-5)&3<element|3=(-6)))}%>%filter{element*element*element+15>-800*19}%>%filter{element=element|-5*element>element}";
 
         Lexer lex = new Lexer(expr);
         Parser parser = new Parser(lex);
@@ -335,7 +335,7 @@ class ParserTest {
 
     @Test
     public void treesSixEl422313() throws SyntaxError, TypeError {
-        String expr = "filter{(element=element)|-5*element>element} %>% filter{ (element>-5)&3<element|3=-6 } %>% filter{ (element>-5)&3<element|3=-6 }%>%filter{(((element))*element*element+15>-800*19)} %>% map{ ((( element+ 15*3- (element+  4)*10 - 5 ) ))} %>% filter{((element)*(element)*element+15>(-800*19))}";
+        String expr = "filter{(element=element)|-5*element>element}%>%filter{(element>-5)&3<element|3=-6}%>%filter{(element>-5)&3<element|3=-6}%>%filter{(((element))*element*element+15>-800*19)}%>%map{(((element+15*3-(element+4)*10-5)))}%>%filter{((element)*(element)*element+15>(-800*19))}";
 
         Lexer lex = new Lexer(expr);
         Parser parser = new Parser(lex);

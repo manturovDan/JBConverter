@@ -21,7 +21,6 @@ public class Lexer {
     void readCh() throws SyntaxError {
         if (curCh == parsed.length() - 1) {
             peek = '\n';
-            ++curCh;
         }
         else if (curCh == parsed.length())
             throw new SyntaxError();
@@ -51,9 +50,6 @@ public class Lexer {
 
     public Token scan() throws SyntaxError {
         readCh();
-
-        while (peek == ' ' || peek == '\t')
-            readCh();
 
         boolean waitBinMinusCurrent = waitBinMinus;
         waitBinMinus = false;
