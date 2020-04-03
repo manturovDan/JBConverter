@@ -19,7 +19,16 @@ public class MakeString {
                 constructAns.append("filter{");
             else if (tree instanceof MapCall)
                 constructAns.append("map{");
-            constructAns.append(printNode(tree.getVertex())).append("}");
+
+            if (tree.getVertex() instanceof Operator)
+                constructAns.append("(");
+
+            constructAns.append(printNode(tree.getVertex()));
+
+            if (tree.getVertex() instanceof Operator)
+                constructAns.append(")");
+
+            constructAns.append("}");
         }
 
         return constructAns.toString();
