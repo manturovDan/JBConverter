@@ -408,73 +408,61 @@ public class ErrorRecognizeTest {
         waitTypeAnl("filter{((((5+element)+13)<4)&(5*(element*(element+10))))}");
         waitTypeAnl("filter{((((5+element)+13)+4)&(5<(element*(element+10))))}");
         waitSyntaxAnl("filter{((((5+element)+13)+4)&(5<(element*(element+10))))}%>%map{1)}");
+        waitTypeAnl("filter{((((5+element)+13)+4)&(5<(element*(element+10))))}%>%map{1}");
     }
 
     @Test
     public void typeCorrect() throws Exception {
-        String expr = "filter{element+-21>-599}%>%filter{(1<2)}%>%filter{element<-21&1=0}";
+        String expr = "filter{((element+-21)>-599)}%>%filter{(1<2)}%>%filter{((element<-21)&(1=0))}";
         noErr(expr);
     }
 
     @Test
     public void typeErrOr0() {
-        String expr = "filter{element+-21>-599}%>%filter{(1<2)}%>%filter{element+-21|1+0}";
+        String expr = "filter{((element+-21)>-599)}%>%filter{(1<2)}%>%filter{((element<-21)|(1+0))}";
         waitTypeAnl(expr);
     }
 
     @Test
     public void typeErrOr() {
-        String expr = "filter{element+-21>-599}%>%filter{(1<2)}%>%filter{element+-21|1=0}";
+        String expr = "filter{((element+-21)|-599)}%>%filter{(1<2)}%>%filter{((element<-21)&(1=0))}";
         waitTypeAnl(expr);
     }
 
     @Test
-    public void typeOr() throws Exception {
-        String expr = "filter{element+-21>-599}%>%filter{(1<2)}%>%filter{element<-21|1=0}";
-        noErr(expr);
-    }
-
-    @Test
     public void typeEqErr() {
-        String expr = "filter{element+-21>-599}%>%filter{(1<2)}%>%filter{element<-21|1=(1=2)}";
+        String expr = "filter{(((5+3)<8)|(1=(element>2)))}";
         waitTypeAnl(expr);
     }
 
     @Test
     public void typeGrErr() {
-        String expr = "filter{element+-21>(1>2)}%>%filter{(1<2)}%>%filter{element<-21|1=0}";
+        String expr = "filter{(((5=3)>element)|(1=0))}";
         waitTypeAnl(expr);
     }
 
     @Test
     public void typeLsErr() {
-        String expr = "filter{element+-21>-599}%>%filter{(1<(2=-1))}%>%filter{element<-21|1=(1=2)}";
+        String expr = "filter{(((5=3)<element)|(1=0))}";
         waitTypeAnl(expr);
     }
 
     @Test
     public void typePlusErr() {
-        String expr = "filter{element+(-21>-599)}%>%filter{(1<2)}%>%filter{element<-21|1=1-2}";
+        String expr = "map{(((element+188)*38)+(2=2))}";
         waitTypeAnl(expr);
     }
 
     @Test
     public void typeMinusErr() {
-        String expr = "filter{(-21>-601)-element+1}%>%filter{(1<2)}%>%filter{element<-21|1=1-2}";
+        String expr = "map{(((element+188)*38)-(2=2))}";
         waitTypeAnl(expr);
     }
 
     @Test
     public void typeMulErr() {
-        String expr = "filter{element+-21>-599}%>%filter{(1<2*(0=4))}%>%filter{element<-21|1=0}";
+        String expr = "map{(((element+188)*38)*(2=2))}";
         waitTypeAnl(expr);
     }
-
-    @Test
-    public void allOk() throws Exception {
-        String expr = "filter{(element>10)}%>%map{element*element}%>%filter{(element>10&element*element+15<4|3=1)}%>%filter{(element=1)|1=0}%>%filter{(element>10)}%>%map{element*element}%>%map{element*element}%>%map{element*element}%>%filter{(element>10)}%>%map{element*element}%>%filter{(element>10)}%>%map{element*element}%>%map{element*element}%>%filter{(element>10)}";
-        noErr(expr);
-    }
-
 
 }

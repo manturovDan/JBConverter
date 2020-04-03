@@ -54,7 +54,7 @@ public class Parser {
             if (look == Word.filter) {
                 System.out.println("FILTER");
                 expression();
-                //change last there
+
                 try {
                     callChain.add(new FilterCall((Logic) operands.element()));
                 }
