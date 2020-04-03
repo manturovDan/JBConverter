@@ -16,6 +16,14 @@ public class FilterCall extends Call {
     }
 
     @Override
+    public void setVertex(Node ver) throws TypeError {
+        if ((ver instanceof Logic))
+            vertex = (Logic)ver;
+        else
+            throw new TypeError();
+    }
+
+    @Override
     public void changeVertex(Node ver) throws TypeError {
         if (!(ver instanceof Logic))
             Parser.typeError();

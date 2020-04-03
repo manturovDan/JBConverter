@@ -74,7 +74,7 @@ public class Merger {
 
     protected void gainRun(Call current) throws TypeError, CloneNotSupportedException {
         if (elementReplacement != null && !(elementReplacement instanceof Element)) {
-            gainTree(current.getVertex(), elementReplacement);
+            current.setVertex(gainTree(current.getVertex(), elementReplacement));
             if (current instanceof MapCall)
                 elementReplacement = null;
         }
@@ -87,7 +87,7 @@ public class Merger {
         cur.changeVertex(and);
     }
 
-    protected void mergeMM(MapCall prev, MapCall cur) throws TypeError, CloneNotSupportedException {
+    protected void mergeMM(MapCall prev, MapCall cur) {
         elementReplacement = prev.getVertex();
     }
 
@@ -95,9 +95,9 @@ public class Merger {
         elementReplacement = prev.getVertex();
     }
 
-    protected void gainTree(Node frame, Node growth) throws CloneNotSupportedException, TypeError { //growth only Numeric
+    protected Node gainTree(Node frame, Node growth) throws CloneNotSupportedException, TypeError { //growth only Numeric
         if (frame == null || frame instanceof Number)
-            return;
+            return null;
 
         if (frame instanceof Element) {
             Node repl = growth.cloneTree(frame.getParent());
@@ -109,10 +109,15 @@ public class Merger {
                     ((Operator)frame.getParent()).setRight(repl);
                 }
             }
-            return;
+            else {
+                frame = growth;
+            }
+            return frame;
         }
 
         gainTree(((Operator)frame).getLeft(), growth);
         gainTree(((Operator)frame).getRight(), growth);
+
+        return frame;
     }
 }

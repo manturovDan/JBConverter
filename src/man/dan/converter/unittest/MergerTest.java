@@ -53,7 +53,10 @@ class MergerTest {
 
     @Test
     public void exampleMy2() throws Exception {
-        Assert.assertEquals(allSteps("map{((((10000*element)*20)+15)*0)}%>%map{(((element+188)*38)-2)}%>%map{(3*1)}%>%map{element}"),
+        //Assert.assertEquals(allSteps("map{((((10000*element)*20)+15)*0)}%>%map{(((element+188)*38)-2)}%>%map{(3*1)}%>%map{element}"),
+        //        "filter{(1=1)}%>%map{(3*1)}");
+
+        Assert.assertEquals(allSteps("map{(3*1)}%>%map{element}"),
                 "filter{(1=1)}%>%map{(3*1)}");
     }
 }

@@ -16,6 +16,14 @@ public class MapCall extends Call {
     }
 
     @Override
+    public void setVertex(Node ver) throws TypeError {
+        if ((ver instanceof Numeric))
+            vertex = (Numeric)ver;
+        else
+            throw new TypeError();
+    }
+
+    @Override
     public void changeVertex(Node ver) throws TypeError {
         if (!(ver instanceof Numeric))
             Parser.typeError();
