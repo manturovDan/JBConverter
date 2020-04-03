@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MergerTest {
-    String allSteps(String input) throws Exception {
+    public static String allSteps(String input) throws Exception {
         Lexer lex = new Lexer(input);
         Parser parser = new Parser(lex);
         LinkedList<Call> callChain = parser.analysis();
