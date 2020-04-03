@@ -16,20 +16,16 @@ public class Parser {
     protected ArrayDeque<Node> operands = new ArrayDeque<>();
     protected ArrayDeque<Word> operators = new ArrayDeque<>();
 
-    protected static HashMap<Token, Integer> allOperators = new HashMap<>() {{
-        put(Word.mul, 1);
-        put(Word.plus, 2);
-        put(Word.minus, 2);
-        put(Word.greater, 3);
-        put(Word.less, 3);
-        put(Word.equal, 4);
-        put(Word.and, 5);
-        put(Word.or, 6);
+    protected static HashSet<Token> allOperators = new HashSet<>() {{
+        add(Word.mul);
+        add(Word.plus);
+        add(Word.minus);
+        add(Word.greater);
+        add(Word.less);
+        add(Word.equal);
+        add(Word.and);
+        add(Word.or);
     }};
-
-    public static int getPriority(Word w) {
-        return allOperators.get(w);
-    }
 
     public Parser(Lexer l) throws SyntaxError {
         lexer = l;
@@ -141,10 +137,10 @@ public class Parser {
             else if (look.equals(Word.element)) {
                 operands.add(new Element());
             }
-            else if (allOperators.containsKey(look)) {
+            else if (allOperators.contains(look)) {
                 Word curOperator = (Word)look;
 
-                if (allOperators.containsKey(operators.getLast()))
+                if (allOperators.contains(operators.getLast()))
                     throw new SyntaxError();
 
                 operators.add(curOperator);

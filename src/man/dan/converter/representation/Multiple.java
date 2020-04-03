@@ -10,11 +10,6 @@ public class Multiple extends Operator implements Numeric, GetsNumeric {
     }
 
     @Override
-    public int getPriority() {
-        return Parser.getPriority(Word.mul);
-    }
-
-    @Override
     protected Multiple clone() throws CloneNotSupportedException {
         return (Multiple)super.clone();
     }

@@ -10,11 +10,6 @@ public class Greater extends Operator implements Logic, GetsNumeric {
     }
 
     @Override
-    public int getPriority() {
-        return Parser.getPriority(Word.greater);
-    }
-
-    @Override
     protected Greater clone() throws CloneNotSupportedException {
         return (Greater)super.clone();
     }

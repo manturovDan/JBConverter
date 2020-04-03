@@ -10,11 +10,6 @@ public class And extends Operator implements Logic, GetsLogic {
     }
 
     @Override
-    public int getPriority() {
-        return Parser.getPriority(Word.and);
-    }
-
-    @Override
     protected And clone() throws CloneNotSupportedException {
         return (And)super.clone();
     }

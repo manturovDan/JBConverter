@@ -10,11 +10,6 @@ public class Less extends Operator implements Logic, GetsNumeric {
     }
 
     @Override
-    public int getPriority() {
-        return Parser.getPriority(Word.less);
-    }
-
-    @Override
     protected Less clone() throws CloneNotSupportedException {
         return (Less)super.clone();
     }

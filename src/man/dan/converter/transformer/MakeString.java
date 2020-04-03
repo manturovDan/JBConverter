@@ -27,17 +27,17 @@ public class MakeString {
 
     public static StringBuilder printNode(Node vertex) {
         StringBuilder res = new StringBuilder();
-        int operatorPrior = -1;
+        boolean isOperator = false;
 
         if (vertex instanceof Operator) {
-            operatorPrior = ((Operator) vertex).getPriority();
+            isOperator = true;
         }
 
-        if (operatorPrior != -1) {
+        if (isOperator) {
             Node leftChild;
             boolean brackets = false;
             leftChild = ((Operator) vertex).getLeft();
-            if (leftChild instanceof Operator && ((Operator) leftChild).getPriority() > operatorPrior)
+            if (leftChild instanceof Operator)
                 brackets = true;
             if(brackets)
                 res.append("(");
@@ -48,11 +48,11 @@ public class MakeString {
 
         res.append(vertex);
 
-        if (operatorPrior != -1) {
+        if (isOperator) {
             Node rightChild;
             boolean brackets = false;
             rightChild = ((Operator) vertex).getRight();
-            if (rightChild instanceof Operator && ((Operator) rightChild).getPriority() > operatorPrior)
+            if (rightChild instanceof Operator)
                 brackets = true;
             if(brackets)
                 res.append("(");
