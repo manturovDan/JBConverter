@@ -35,7 +35,7 @@ public class OnFlightTest {
         expr = expr.replaceAll("element", String.valueOf(num));
         String res = JSEng.engine.eval(expr).toString();
         //System.out.println("expr:" + expr);
-        return res.equals("1");
+        return res.equals("true") || res.equals("1");
     }
 
     public int map(String expr, int num) throws ScriptException {
@@ -70,14 +70,13 @@ public class OnFlightTest {
             res.add(num);
         }
 
-        //System.out.println(res);
+        System.out.println(res);
         return res;
     }
 
     @Test
     public void FTSimple() throws Exception {
-        //flight("filter{(((element+(15*3))-((element+4)*10))=5)}%>%map{((((10000*element)*20)+15)*0)}%>%filter{((((5+3)<8)|(1=0))&(element>-9))}%>%filter{(((5+3)<8)|(1=0))}%>%filter{((((3*element)+(2*element))<-1)|((-4*element)>0))}%>%map{element}", -100, 100);
         String expr = "filter{(element>10)}%>%map{(element+5)}%>%filter{(1=1)}";
-        Assert.assertEquals(flight(MergerTest.allSteps(expr), 8, 12), flight(MergerTest.allSteps(expr), 8, 12));
+        Assert.assertEquals(flight(MergerTest.allSteps(expr), 8, 12), flight(expr, 8, 12));
     }
 }
