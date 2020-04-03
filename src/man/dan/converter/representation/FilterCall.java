@@ -1,5 +1,6 @@
 package man.dan.converter.representation;
 
+import man.dan.converter.parser.Parser;
 import man.dan.converter.parser.TypeError;
 
 public class FilterCall extends Call {
@@ -17,7 +18,7 @@ public class FilterCall extends Call {
     @Override
     public void changeVertex(Node ver) throws TypeError {
         if (!(ver instanceof Logic))
-            throw new TypeError();
+            Parser.typeError();
         vertex = (Logic) ver;
     }
 }

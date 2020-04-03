@@ -16,6 +16,17 @@ public class Parser {
     protected ArrayDeque<Node> operands = new ArrayDeque<>();
     protected ArrayDeque<Word> operators = new ArrayDeque<>();
 
+    //SYNTAX ERROR has higher priority then TYPE ERROR
+    protected static boolean typeErr = false;
+
+    public static boolean isTypeError() {
+        return typeErr;
+    }
+
+    public static void typeError() {
+        typeErr = true;
+    }
+
     protected static HashSet<Token> allOperators = new HashSet<>() {{
         add(Word.mul);
         add(Word.plus);
@@ -47,7 +58,7 @@ public class Parser {
                 callChain.add(new FilterCall((Logic) operands.element()));
                 }
                 catch (ClassCastException c) {
-                    throw new TypeError();
+                    Parser.typeError();
                 }
             }
             else if (look == Word.map) {
@@ -57,7 +68,7 @@ public class Parser {
                     callChain.add(new MapCall((Numeric) operands.element()));
                 }
                 catch (ClassCastException c) {
-                    throw new TypeError();
+                    Parser.typeError();
                 }
             }
             else
@@ -77,6 +88,8 @@ public class Parser {
         if (callChain.size() == 0)
             throw  new SyntaxError();
 
+        if (isTypeError())
+            throw new TypeError();
         return callChain;
     }
 

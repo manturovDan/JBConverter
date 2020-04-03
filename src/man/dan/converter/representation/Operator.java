@@ -1,19 +1,20 @@
 package man.dan.converter.representation;
 
+import man.dan.converter.parser.Parser;
 import man.dan.converter.parser.TypeError;
 
 public abstract class Operator extends Node {
     protected Node left;
     protected Node right;
 
-    public Operator(Node l, Node r) throws TypeError {
+    public Operator(Node l, Node r) {
         if (this instanceof GetsNumeric) {
             if (!(l instanceof Numeric) || !(r instanceof Numeric))
-                throw new TypeError();
+                Parser.typeError();
         }
         if (this instanceof GetsLogic) {
             if (!(l instanceof Logic) || !(r instanceof Logic))
-                throw new TypeError();
+                Parser.typeError();
         }
 
         left = l;
@@ -32,27 +33,27 @@ public abstract class Operator extends Node {
         return clone;
     }
 
-    public void setLeft(Node l) throws TypeError {
+    public void setLeft(Node l) {
         if (this instanceof GetsNumeric) {
             if (!(l instanceof Numeric))
-                throw new TypeError();
+                Parser.typeError();
         }
         if (this instanceof GetsLogic) {
             if (!(l instanceof Logic))
-                throw new TypeError();
+                Parser.typeError();
         }
 
         left = l;
     }
 
-    public void setRight(Node r) throws TypeError {
+    public void setRight(Node r) {
         if (this instanceof GetsNumeric) {
             if (!(r instanceof Numeric))
-                throw new TypeError();
+                Parser.typeError();
         }
         if (this instanceof GetsLogic) {
             if (!(r instanceof Logic))
-                throw new TypeError();
+                Parser.typeError();
         }
 
         right = r;
