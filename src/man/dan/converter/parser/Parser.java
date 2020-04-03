@@ -141,7 +141,7 @@ public class Parser {
         operands.clear();
 
         Word popped;
-        rec: for (; look != Word.cl_brace; move()) {
+        for (; look != Word.cl_brace; move()) {
             System.out.println(look);
 
             if (look instanceof Num) {
@@ -174,7 +174,7 @@ public class Parser {
                 throw new SyntaxError();
         }
 
-        if (operands.isEmpty() || !operators.isEmpty())
+        if (operands.size() != 1 || !operators.isEmpty())
             throw new SyntaxError();
     }
 }
