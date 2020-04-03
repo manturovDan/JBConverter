@@ -58,8 +58,11 @@ public class Merger {
         }
 
         if (chain.size() == 1) {
-            if (chain.element() instanceof FilterCall)
-                chain.add(new MapCall((Numeric)elementReplacement));
+            if (chain.element() instanceof FilterCall) {
+                if (elementReplacement == null)
+                    elementReplacement = new Element();
+                chain.add(new MapCall((Numeric) elementReplacement));
+            }
             else {
                 Equal eq = new Equal(new Number(1), new Number(1));
                 eq.getLeft().setParent(eq);
