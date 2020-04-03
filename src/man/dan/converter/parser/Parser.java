@@ -143,18 +143,10 @@ public class Parser {
             }
             else if (allOperators.containsKey(look)) {
                 Word curOperator = (Word)look;
-                Word iterOperator;
 
-                while (!operators.isEmpty()) {
-                    iterOperator = operators.getLast();
+                if (allOperators.containsKey(operators.getLast()))
+                    throw new SyntaxError();
 
-                    if (allOperators.containsKey(iterOperator) && allOperators.get(curOperator) >= allOperators.get(iterOperator)) {
-                        operators.removeLast();
-                        addNode(iterOperator);
-                    }
-                    else
-                        break;
-                }
                 operators.add(curOperator);
             }
             else if (look.equals(Word.op_bracket)) {
@@ -178,14 +170,7 @@ public class Parser {
                 throw new SyntaxError();
         }
 
-        while(!operators.isEmpty()) {
-            popped = operators.removeLast();
-            if (look.equals(Word.op_bracket) || look.equals(Word.cl_bracket))
-                throw new SyntaxError();
-            addNode(popped);
-        }
-
-        if (operands.isEmpty())
+        if (operands.isEmpty() || !operators.isEmpty())
             throw new SyntaxError();
     }
 }
