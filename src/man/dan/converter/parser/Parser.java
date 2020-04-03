@@ -53,7 +53,7 @@ public class Parser {
 
         for (;;) {
             if (look == Word.filter) {
-                System.out.println("FILTER");
+                //System.out.println("FILTER");
                 expression();
 
                 try {
@@ -65,7 +65,7 @@ public class Parser {
                 }
             }
             else if (look == Word.map) {
-                System.out.println("MAP");
+                //System.out.println("MAP");
                 expression();
                 try {
                     callChain.add(new MapCall((Numeric) operands.element()));
@@ -85,7 +85,7 @@ public class Parser {
             else if (look != Word.conveyor)
                 throw new SyntaxError();
 
-            System.out.println("PIPE");
+            //System.out.println("PIPE");
             move();
         }
 
@@ -150,7 +150,7 @@ public class Parser {
 
         Word popped;
         for (; look != Word.cl_brace; move()) {
-            System.out.println(look);
+            //System.out.println(look);
 
             if (look instanceof Num) {
                 operands.add(new Number(look));

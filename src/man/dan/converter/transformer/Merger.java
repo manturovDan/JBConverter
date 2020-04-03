@@ -18,13 +18,11 @@ public class Merger {
     public void transform() throws Exception {
         ListIterator<Call> iter = chain.listIterator();
 
-        //TODO check empty list
-
         Call previous;
         Call current = iter.next();
 
         while (iter.hasNext()) {
-            System.out.println(chain);
+            //System.out.println(chain);
 
             previous = current;
             current = iter.next();
@@ -59,7 +57,19 @@ public class Merger {
 
         }
 
-        System.out.println(chain);
+        if (chain.size() == 1) {
+            if (chain.element() instanceof FilterCall)
+                chain.add(new MapCall(new Element()));
+            else {
+                Equal eq = new Equal(new Number(1), new Number(1));
+                eq.getLeft().setParent(eq);
+                eq.getRight().setParent(eq);
+
+                chain.addFirst(new FilterCall(eq));
+            }
+        }
+
+        //System.out.println(chain);
     }
 
     protected void gainRun(Call current) throws TypeError, CloneNotSupportedException {
