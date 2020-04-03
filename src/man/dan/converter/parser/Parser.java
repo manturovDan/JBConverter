@@ -17,7 +17,7 @@ public class Parser {
     protected ArrayDeque<Word> operators = new ArrayDeque<>();
 
     //SYNTAX ERROR has higher priority then TYPE ERROR
-    protected static boolean typeErr = false;
+    protected static boolean typeErr;
 
     public static boolean isTypeError() {
         return typeErr;
@@ -39,6 +39,7 @@ public class Parser {
     }};
 
     public Parser(Lexer l) throws SyntaxError {
+        typeErr = false;
         lexer = l;
         move();
     }
