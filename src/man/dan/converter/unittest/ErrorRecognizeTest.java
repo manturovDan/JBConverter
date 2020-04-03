@@ -112,7 +112,12 @@ public class ErrorRecognizeTest {
     @Test
     public void bracketsCorrect() throws Exception {
         String expr = "filter{(((element>-5)&(3<element))|(3=-6))}";
+        String expr1 = "map{((((10000*element)*20)+15)*0)}";
+        String expr2 = "filter{((((5+element)+13)<4)&(5<(element*(element+10))))}";
+
         noErr(expr);
+        noErr(expr1);
+        noErr(expr2);
     }
 
     @Test
@@ -158,41 +163,59 @@ public class ErrorRecognizeTest {
     }
 
     @Test
+    public void bracketsErr8() throws Exception {
+        String expr = "filter{((((5+element)+13)<4)&(5<(element*((element+10)))))}";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void bracketsErr9() throws Exception {
+        String expr = "map{(((((10000*element)*20)+15)*0))}";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void bracketsErr10() throws Exception {
+        String expr = "map{((((((10000*element)))*20)+15)*0)}";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
     public void trickErr1() {
-        String expr = "filter{element+15*3-map{(element+4)}*10-5>10} ";
+        String expr = "filter{(((element>-5)&(3<element))}|(3=-6))}";
         waitSyntaxAnl(expr);
     }
 
     @Test
     public void trickErr2() {
-        String expr = "filter{element+15*3-{(element+4)}*10-5>10 } ";
+        String expr = "map{{(((element+(15*3))-((element+4)*10))-5)}";
         waitSyntaxAnl(expr);
     }
 
     @Test
     public void chainErr1() {
-        String expr = "filter{element+15*3-(element+4)*10-5>10}>>>>map{element}";
+        String expr = "map{(((element+(15*3))-((element+4)*10))-5)}>>>>map{element}";
         waitSyntaxAnl(expr);
     }
 
     @Test
     public void chainErr2() {
-        String expr = "filter{element+15*3-(element+4)*10-5>10}%>%%>%map{element}";
+        String expr = "filter{(((element+(15*3))>((element+4)*10))&(1=0))}%>%%>%map{element}";
         waitSyntaxAnl(expr);
     }
 
     @Test
     public void chainErr3() {
-        String expr = "filter{element+15*3-(element+4)*10-5>10}%>%map{element}%>%map{}";
+        String expr = "filter{(((element+(15*3))>((element+4)*10))&(1=0))}%>%%>%map{}";
         waitSyntaxAnl(expr);
     }
 
     @Test
     public void chainErr4() {
-        String expr = "filter{}%>%filter{element+15*3-(element+4)*10-5>10}%>%map{element}%>%map{element}";
+        String expr = "filter{}%>%filter{(((element+(15*3))>((element+4)*10))&(1=0))}%>%%>%map{element}";
         waitSyntaxAnl(expr);
     }
-
+/*
     @Test
     public void expressionErr1() {
         String expr = "filter{1=0}%>%filter{element+15*3-(element+4))*10-5>10}%>%map{element}%>%map{element}";
@@ -402,4 +425,6 @@ public class ErrorRecognizeTest {
         String expr = "filter{(element>10)}%>%map{element*element}%>%filter{(element>10&element*element+15<4|3=1)}%>%filter{(element=1)|1=0}%>%filter{(element>10)}%>%map{element*element}%>%map{element*element}%>%map{element*element}%>%filter{(element>10)}%>%map{element*element}%>%filter{(element>10)}%>%map{element*element}%>%map{element*element}%>%filter{(element>10)}";
         noErr(expr);
     }
+
+ */
 }

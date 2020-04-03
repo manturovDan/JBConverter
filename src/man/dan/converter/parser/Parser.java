@@ -149,11 +149,13 @@ public class Parser {
                 operators.add((Word)look);
             }
             else if (look.equals(Word.cl_bracket)) {
-                addNode(operators.removeLast());
-                if (operators.removeLast().equals(Word.op_bracket))
-                    continue;
+                popped = operators.removeLast();
+                if (popped.equals(Word.op_bracket))
+                    throw new SyntaxError();
+                addNode(popped);
+                if (!operators.removeLast().equals(Word.op_bracket))
+                    throw new SyntaxError();
 
-                throw new SyntaxError();
             }
             else
                 throw new SyntaxError();
