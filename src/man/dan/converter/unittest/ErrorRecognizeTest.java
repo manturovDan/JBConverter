@@ -114,10 +114,20 @@ public class ErrorRecognizeTest {
         String expr = "filter{(((element>-5)&(3<element))|(3=-6))}";
         String expr1 = "map{((((10000*element)*20)+15)*0)}";
         String expr2 = "filter{((((5+element)+13)<4)&(5<(element*(element+10))))}";
+        String expr3 = "filter{(((5+3)<8)|(1=0))}";
+        String expr4 = "filter{((((5+3)<8)|(1=0))&(element>-9))}";
+        String expr5 = "map{(((element+188)*38)-2)}";
+        String expr6 = "map{(3*1)}";
 
         noErr(expr);
         noErr(expr1);
         noErr(expr2);
+        noErr(expr3);
+        noErr(expr4);
+        noErr(expr5);
+        noErr(expr6);
+        noErr("map{element}");
+        noErr("map{1}");
     }
 
     @Test
@@ -215,17 +225,24 @@ public class ErrorRecognizeTest {
         String expr = "filter{}%>%filter{(((element+(15*3))>((element+4)*10))&(1=0))}%>%%>%map{element}";
         waitSyntaxAnl(expr);
     }
-/*
+
     @Test
     public void expressionErr1() {
-        String expr = "filter{1=0}%>%filter{element+15*3-(element+4))*10-5>10}%>%map{element}%>%map{element}";
+        String expr = "filter{((((5+element)+13)<4)&(5<(ele*ment*(element+10))))}";
         waitSyntaxAnl(expr);
     }
 
     @Test
-    public void expressionErr2() {
-        String expr = "filter{1=0}%>%filter{element+15*3-(element+4)*10-5>10}%>%map{element-}%>%map{element}";
-        waitSyntaxAnl(expr);
+    public void expressionErr2() throws Exception {
+        noErr("filter{(1=0)}%>%filter{((((5+element)+13)<4)&(5<(element*(element+10))))}%>%map{(3*1)}%>%map{element}");
+        String expr1 = "filter{(1=0)}%>%filter{((((5+element)+13)<4)&(5<(element*(element+10))))}%>%map{(3*1)-}%>%map{element}";
+        waitSyntaxAnl(expr1);
+
+        String expr2 = "filter{(1=0)}%>%filter{((((5+element)+13)<4)&(5<(element*(element+10))))}%>%map{((3*1)-)}%>%map{element}";
+        waitSyntaxAnl(expr2);
+
+        String expr3 = "filter{(1=0)}%>%filter{((((5+element)+13)<4)0&(5<(element*(element+10))))}%>%map{(3*1)}%>%map{element}";
+        waitSyntaxAnl(expr3);
     }
 
     @Test
@@ -426,5 +443,5 @@ public class ErrorRecognizeTest {
         noErr(expr);
     }
 
- */
+
 }

@@ -140,7 +140,7 @@ public class Parser {
             else if (allOperators.contains(look)) {
                 Word curOperator = (Word)look;
 
-                if (allOperators.contains(operators.getLast()))
+                if (!(operators.isEmpty()) && allOperators.contains(operators.getLast()))
                     throw new SyntaxError();
 
                 operators.add(curOperator);
