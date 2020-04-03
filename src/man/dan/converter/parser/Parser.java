@@ -134,9 +134,13 @@ public class Parser {
         else
             throw new SyntaxError();
 
-
-        left.setParent(operands.getLast());
-        right.setParent(operands.getLast());
+        try {
+            left.setParent(operands.getLast());
+            right.setParent(operands.getLast());
+        }
+        catch (NoSuchElementException e) {
+            throw new SyntaxError();
+        }
     }
 
     public void expression() throws SyntaxError, TypeError {
@@ -156,8 +160,13 @@ public class Parser {
             else if (allOperators.contains(look)) {
                 Word curOperator = (Word)look;
 
-                if (!(operators.isEmpty()) && allOperators.contains(operators.getLast()))
+                try {
+                    if (!(operators.isEmpty()) && allOperators.contains(operators.getLast()))
+                        throw new SyntaxError();
+                }
+                catch (NoSuchElementException e) {
                     throw new SyntaxError();
+                }
 
                 operators.add(curOperator);
             }
@@ -165,11 +174,27 @@ public class Parser {
                 operators.add((Word)look);
             }
             else if (look.equals(Word.cl_bracket)) {
-                popped = operators.removeLast();
+                try {
+                    popped = operators.removeLast();
+                }
+                catch (NoSuchElementException e) {
+                    throw new SyntaxError();
+                }
+
                 if (popped.equals(Word.op_bracket))
                     throw new SyntaxError();
                 addNode(popped);
-                if (!operators.removeLast().equals(Word.op_bracket))
+
+                Word cmp;
+
+                try {
+                    cmp = operators.removeLast();
+                }
+                catch (NoSuchElementException e) {
+                    throw new SyntaxError();
+                }
+
+                if (!cmp.equals(Word.op_bracket))
                     throw new SyntaxError();
 
             }

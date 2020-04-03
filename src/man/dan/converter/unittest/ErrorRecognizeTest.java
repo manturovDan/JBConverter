@@ -395,9 +395,19 @@ public class ErrorRecognizeTest {
     }
 
     @Test
+    public void typeErr3() {
+        String expr = "map{(1=2)}%>%filter{(a)}";
+        waitSyntaxAnl(expr);
+
+        String expr2 = "filter{(a)}%>%map{(1=2)}";
+        waitSyntaxAnl(expr2);
+    }
+
+    @Test
     public void typeErrAnd() {
-        String expr = "filter{element+-21>-599}%>%filter{(1<2)}%>%filter{element+-21&1=0}";
-        waitTypeAnl(expr);
+        waitTypeAnl("filter{((((5+element)+13)<4)&(5*(element*(element+10))))}");
+        waitTypeAnl("filter{((((5+element)+13)+4)&(5<(element*(element+10))))}");
+        waitSyntaxAnl("filter{((((5+element)+13)+4)&(5<(element*(element+10))))}%>%map{1)}");
     }
 
     @Test
