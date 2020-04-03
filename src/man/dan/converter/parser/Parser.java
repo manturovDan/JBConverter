@@ -160,13 +160,8 @@ public class Parser {
             else if (allOperators.contains(look)) {
                 Word curOperator = (Word)look;
 
-                try {
-                    if (!(operators.isEmpty()) && allOperators.contains(operators.getLast()))
-                        throw new SyntaxError();
-                }
-                catch (NoSuchElementException e) {
+                if (!(operators.isEmpty()) && allOperators.contains(operators.getLast()))
                     throw new SyntaxError();
-                }
 
                 operators.add(curOperator);
             }
