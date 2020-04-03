@@ -100,7 +100,7 @@ public class Merger {
 
     protected Node gainTree(Node frame, Node growth) throws CloneNotSupportedException, TypeError { //growth only Numeric
         if (frame == null || frame instanceof Number)
-            return null;
+            return frame;
 
         if (frame instanceof Element) {
             Node repl = growth.cloneTree(frame.getParent());

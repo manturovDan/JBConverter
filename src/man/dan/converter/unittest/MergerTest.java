@@ -98,4 +98,16 @@ class MergerTest {
         Assert.assertEquals(allSteps("filter{(1=0)}"),
                 "filter{(1=0)}%>%map{element}");
     }
+
+    @Test
+    public void nothingTODO4() throws Exception {
+        Assert.assertEquals(allSteps("map{(1+0)}%>%filter{(1=0)}"),
+                "filter{(1=0)}%>%map{(1+0)}");
+    }
+
+    @Test
+    public void nothingTODO5() throws Exception {
+        Assert.assertEquals(allSteps("map{(1+0)}%>%filter{(-2=-3)}%>%map{0}"),
+                "filter{(-2=-3)}%>%map{0}");
+    }
 }
