@@ -23,7 +23,7 @@ class Trees {
 class ParserTest {
     @BeforeAll
     public static void initTreeOne() throws TypeError {
-        /*first (((element+(15*3))-((element+4)*10))--5) */
+        /*first (((element+(15*3))-((element+4)*10))-5) */
         Element el1 = new Element();
         Number fifteen = new Number(15);
         Number three = new Number(3);

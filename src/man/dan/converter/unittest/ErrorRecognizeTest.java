@@ -87,25 +87,73 @@ public class ErrorRecognizeTest {
 
     @Test
     public void subjErr1() {
-        String expr = " mapppp{element+15*3-(element+4)*10-5}";
+        String expr = " mapppp{(((element+(15*3))-((element+4)*10))-5)}";
         waitSyntaxParse(expr);
     }
 
     @Test
     public void subjErr2() {
-        String expr = " f{element+15*3-(element+4)*10-5> 0}";
+        String expr = " f{(((element>-5)&(3<element))|(3=-6))}";
         waitSyntaxParse(expr);
     }
 
     @Test
     public void subjErr3() {
-        String expr = "{element+15*3-(element+4)*10-5>10}";
+        String expr = "{(((element>-5)&(3<element))|(3=-6))}";
         waitSyntaxParse(expr);
     }
 
     @Test
     public void subjErr4() {
-        String expr = "filter{element+15*3-(element+4)*10-5>10";
+        String expr = "filter{(((element>-5)&(3<element))|(3=-6))";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void bracketsCorrect() throws Exception {
+        String expr = "filter{(((element>-5)&(3<element))|(3=-6))}";
+        noErr(expr);
+    }
+
+    @Test
+    public void bracketsErr1() throws Exception {
+        String expr = "filter{(((element>-5)&(3<element>1))|(3=-6))}";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void bracketsErr2() throws Exception {
+        String expr = "filter{(((element>-5)&3<element)|(3=-6))}";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void bracketsErr3() throws Exception {
+        String expr = "filter{(((element>-5)&(3<element))|((3)=-6))}";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void bracketsErr4() throws Exception {
+        String expr = "filter{(((element>-5)&(3<(element)))|(3=-6))}";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void bracketsErr5() throws Exception {
+        String expr = "filter{(((element>-5)&(3<element))|(3=(-)6))}";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void bracketsErr6() throws Exception {
+        String expr = "filter{(((element(>-5))&(3<element))|(3=-6))}";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void bracketsErr7() throws Exception {
+        String expr = "filter{(((element>-5)&(3<element))|(3=-6)}";
         waitSyntaxAnl(expr);
     }
 
