@@ -70,8 +70,16 @@ public class OnFlightTest {
             res.add(num);
         }
 
-        System.out.println(res);
+        //System.out.println(res);
         return res;
+    }
+
+    @Test
+    public void sandTest() throws Exception {
+        String expr = "filter{(element>10)}%>%map{(element+5)}%>%filter{(1=1)}";
+        Assert.assertEquals(flight(expr, 8, 12), flight(expr, 8, 12));
+
+        Assert.assertNotEquals(flight("filter{((((5+3)<8)|(1=0))&(element>-9))}", 8, 12), flight(expr, 8, 12));
     }
 
     @Test
