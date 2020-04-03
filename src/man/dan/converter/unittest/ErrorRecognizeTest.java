@@ -243,6 +243,9 @@ public class ErrorRecognizeTest {
 
         String expr3 = "filter{(1=0)}%>%filter{((((5+element)+13)<4)0&(5<(element*(element+10))))}%>%map{(3*1)}%>%map{element}";
         waitSyntaxAnl(expr3);
+
+        String expr4 = "filter{(1=0)}%>%filter{((((5+element)+13)<4)(1=1)&(5<(element*(element+10))))}%>%map{(3*1)}%>%map{element}";
+        waitSyntaxAnl(expr4);
     }
 
     @Test
