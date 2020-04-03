@@ -54,10 +54,12 @@ public class Parser {
             if (look == Word.filter) {
                 System.out.println("FILTER");
                 expression();
+                //change last there
                 try {
-                callChain.add(new FilterCall((Logic) operands.element()));
+                    callChain.add(new FilterCall((Logic) operands.element()));
                 }
                 catch (ClassCastException c) {
+                    callChain.add(null);
                     Parser.typeError();
                 }
             }
@@ -68,6 +70,7 @@ public class Parser {
                     callChain.add(new MapCall((Numeric) operands.element()));
                 }
                 catch (ClassCastException c) {
+                    callChain.add(null);
                     Parser.typeError();
                 }
             }
