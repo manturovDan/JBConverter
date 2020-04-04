@@ -33,34 +33,38 @@ public class Simplificator {
             simplNode(((Operator) vertex).getRight());
 
             if (((Operator) vertex).getLeft() instanceof Number && ((Operator) vertex).getRight() instanceof Number) {
-                long res;
-                if (vertex instanceof Multiple) {
-                    res = (long)((Number) (((Multiple) vertex).getLeft())).getVal() * (long)((Number) (((Multiple) vertex).getRight())).getVal();
-                } else if (vertex instanceof Plus) {
-                    res = (long)((Number) (((Plus) vertex).getLeft())).getVal() + (long)((Number) (((Plus) vertex).getRight())).getVal();
-                } else if (vertex instanceof Minus) {
-                    res = (long)((Number) (((Minus) vertex).getLeft())).getVal() - (long)((Number) (((Minus) vertex).getRight())).getVal();
-                } else {
-                    return vertex;
-                }
-
-                if (res > Integer.MAX_VALUE || res < Integer.MIN_VALUE)
-                    return vertex;
-
-                ((Number) ((Operator) vertex).getLeft()).setVal((int) res);
-                ((Operator) vertex).getLeft().setParent(vertex.getParent());
-
-                if (((Operator) vertex.getParent()).getLeft() == vertex) {
-                    ((Operator) vertex.getParent()).setLeft(((Operator) vertex).getLeft());
-                } else if (((Operator) vertex.getParent()).getRight() == vertex) {
-                    ((Operator) vertex.getParent()).setRight(((Operator) vertex).getLeft());
-                }
-
-                return vertex;
+                return simplBinNum((Operator) vertex);
             }
         }
 
         return vertex;
 
+    }
+
+    public Node simplBinNum(Operator vertex) {
+        long res;
+        if (vertex instanceof Multiple) {
+            res = (long)((Number) (vertex.getLeft())).getVal() * (long)((Number) (vertex.getRight())).getVal();
+        } else if (vertex instanceof Plus) {
+            res = (long)((Number) (vertex.getLeft())).getVal() + (long)((Number) (vertex.getRight())).getVal();
+        } else if (vertex instanceof Minus) {
+            res = (long)((Number) (vertex.getLeft())).getVal() - (long)((Number) (vertex.getRight())).getVal();
+        } else {
+            return vertex;
+        }
+
+        if (res > Integer.MAX_VALUE || res < Integer.MIN_VALUE)
+            return vertex;
+
+        ((Number) vertex.getLeft()).setVal((int) res);
+        vertex.getLeft().setParent(vertex.getParent());
+
+        if (((Operator) vertex.getParent()).getLeft() == vertex) {
+            ((Operator) vertex.getParent()).setLeft( vertex.getLeft());
+        } else if (((Operator) vertex.getParent()).getRight() == vertex) {
+            ((Operator) vertex.getParent()).setRight(vertex.getLeft());
+        }
+
+        return vertex;
     }
 }

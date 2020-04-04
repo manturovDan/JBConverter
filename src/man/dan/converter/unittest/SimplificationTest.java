@@ -36,4 +36,11 @@ public class SimplificationTest {
                 "filter{(element>10)}%>%map{(35-(element+10))}");
 
     }
+
+    @Test
+    public void plusRSimplTestDeep() throws Exception {
+        Assert.assertEquals(allStepsSimpl("filter{(element>10)}%>%map{(((20+15)-(element+10))*(((1*(2-18))*10)+((7*8)-3)))}"),
+                "filter{(element>10)}%>%map{((35-(element+10))*-107)}");
+
+    }
 }
