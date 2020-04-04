@@ -465,4 +465,35 @@ public class ErrorRecognizeTest {
         waitTypeAnl(expr);
     }
 
+    //Overflow
+
+    @Test
+    public void overflowTesting1() throws Exception {
+        String expr = "map{((element+12)-(-2147483648-1))}";
+        noErr(expr);
+    }
+
+    @Test
+    public void overflowTesting2() {
+        String expr = "map{((element+12)-(-2147483649-1))}";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void overflowTesting3() throws Exception {
+        String expr = "map{((element+12)-(2147483647-1))}";
+        noErr(expr);
+    }
+
+    @Test
+    public void overflowTesting4() {
+        String expr = "map{((element+12)-(2147483648-1))}";
+        waitSyntaxAnl(expr);
+    }
+
+    @Test
+    public void overflowTesting5() {
+        String expr = "map{((element+12)-(100000000000000000000-1))}";
+        waitSyntaxAnl(expr);
+    }
 }
