@@ -44,7 +44,7 @@ public class OnFlightTest {
         return Integer.parseInt(res);
     }
 
-    public ArrayList<Integer> flight(String expr, int from, int to) throws ScriptException {
+    public ArrayList<Integer> flight(String expr, int from, int to, boolean resulted) throws ScriptException {
         ArrayList<Integer> res = new ArrayList<>();
 
         expr = expr.replaceAll("=", "==");
@@ -55,17 +55,27 @@ public class OnFlightTest {
             int num = i;
             match = patn.matcher(expr);
 
+            int step = 0;
             while (match.find()) {
+                if (resulted && step == 2)
+                    Assert.fail();
                 //System.out.println(match.group(1) + " : " + match.group(2));
                 if (match.group(1).equals("filter")) {
+                    if (resulted && step != 0)
+                        Assert.fail();
+
                     if(!filter(match.group(2), num)) {
                         continue next;
                     }
                 }
 
                 if (match.group(1).equals("map")) {
+                    if (resulted && step != 1)
+                        Assert.fail();
                     num = map(match.group(2), num);
                 }
+
+                ++step;
             }
             res.add(num);
         }
@@ -77,14 +87,14 @@ public class OnFlightTest {
     @Test
     public void sandTest() throws Exception {
         String expr = "filter{(element>10)}%>%map{(element+5)}%>%filter{(1=1)}";
-        Assert.assertEquals(flight(expr, 8, 12), flight(expr, 8, 12));
+        Assert.assertEquals(flight(expr, 8, 12, false), flight(expr, 8, 12, false));
 
-        Assert.assertNotEquals(flight("filter{((((5+3)<8)|(1=0))&(element>-9))}", 8, 12), flight(expr, 8, 12));
+        Assert.assertNotEquals(flight("filter{((((5+3)<8)|(1=0))&(element>-9))}", 8, 12, false), flight(expr, 8, 12, false));
     }
 
     @Test
     public void FTSimple() throws Exception {
         String expr = "filter{(element>10)}%>%map{(element+5)}%>%filter{(1=1)}";
-        Assert.assertEquals(flight(MergerTest.allSteps(expr), 8, 12), flight(expr, 8, 12));
+        Assert.assertEquals(flight(MergerTest.allSteps(expr), 8, 12, true), flight(expr, 8, 12, false));
     }
 }
