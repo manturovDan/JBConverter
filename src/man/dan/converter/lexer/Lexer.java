@@ -98,7 +98,7 @@ public class Lexer {
             int add;
 
             do {
-                if (val > Integer.MAX_VALUE || val < Integer.MIN_VALUE)
+                if (val > Integer.MAX_VALUE)
                     throw new SyntaxError();
 
                 val *= 10;
