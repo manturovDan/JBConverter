@@ -35,6 +35,27 @@ public class Simplificator {
             if (((Operator) vertex).getLeft() instanceof Number && ((Operator) vertex).getRight() instanceof Number) {
                 return simplBinNum((Operator) vertex);
             }
+
+            if (vertex instanceof Multiple) {
+                if (((Multiple) vertex).getRight() instanceof Number && ((Multiple) vertex).getLeft() instanceof Multiple) {
+                    if (((Multiple) ((Multiple) vertex).getLeft()).getLeft() instanceof Number) {
+                        return simpleMul((Number) ((Multiple) ((Multiple) vertex).getLeft()).getLeft(), (Number) ((Multiple) vertex).getRight(),
+                                ((Multiple) ((Multiple) vertex).getLeft()).getRight(), (Multiple) vertex);
+                    } else if (((Multiple) ((Multiple) vertex).getLeft()).getRight() instanceof Number) {
+                        return simpleMul((Number) ((Multiple) ((Multiple) vertex).getLeft()).getRight(), (Number) ((Multiple) vertex).getRight(),
+                                ((Multiple) ((Multiple) vertex).getLeft()).getLeft(), (Multiple) vertex);
+                    }
+                } else if (((Multiple) vertex).getLeft() instanceof Number && ((Multiple) vertex).getRight() instanceof Multiple) {
+                    if (((Multiple) ((Multiple) vertex).getRight()).getLeft() instanceof Number) {
+                        return simpleMul((Number) ((Multiple) ((Multiple) vertex).getRight()).getLeft(), (Number) ((Multiple) vertex).getLeft(),
+                                ((Multiple) ((Multiple) vertex).getRight()).getRight(), (Multiple) vertex);
+                    } else if (((Multiple) ((Multiple) vertex).getRight()).getRight() instanceof Number) {
+                        return simpleMul((Number) ((Multiple) ((Multiple) vertex).getRight()).getRight(), (Number) ((Multiple) vertex).getLeft(),
+                                ((Multiple) ((Multiple) vertex).getRight()).getLeft(), (Multiple) vertex);
+                    }
+                }
+
+            }
         }
 
         return vertex;
@@ -64,6 +85,21 @@ public class Simplificator {
         } else if (((Operator) vertex.getParent()).getRight() == vertex) {
             ((Operator) vertex.getParent()).setRight(vertex.getLeft());
         }
+
+        return vertex;
+    }
+
+    public Node simpleMul(Number n1, Number n2, Node x, Multiple vertex) {
+        long res = (long)n1.getVal() * (long)n2.getVal();
+
+        if (res > Integer.MAX_VALUE || res < Integer.MIN_VALUE)
+            return vertex;
+
+        n1.setVal((int)res);
+        n1.setParent(vertex);
+        vertex.setLeft(n1);
+        x.setParent(vertex);
+        vertex.setRight(x);
 
         return vertex;
     }
