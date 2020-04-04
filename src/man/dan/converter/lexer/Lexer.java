@@ -134,6 +134,9 @@ public class Lexer {
             String s = str.toString();
             Word w = words.get(s);
 
+            if (w == Word.element)
+                waitBinMinus = true;
+
             if (w != null)
                 return w;
 
