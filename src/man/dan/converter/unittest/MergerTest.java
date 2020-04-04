@@ -82,6 +82,12 @@ class MergerTest {
     }
 
     @Test
+    public void mffTest() throws Exception {
+        Assert.assertEquals(allSteps("filter{((10*0)<element)}%>%map{(element-(3*40))}%>%filter{((9-((9+element)+(2*2)))=(-2147483648*-1))}%>%filter{(element>0)}%>%map{(element*-1)}"),
+                "filter{((((10*0)<element)&((9-((9+(element-(3*40)))+(2*2)))=(-2147483648*-1)))&((element-(3*40))>0))}%>%map{((element-(3*40))*-1)}");
+    }
+
+    @Test
     public void nothingTODO1() throws Exception {
         Assert.assertEquals(allSteps("map{1}"),
                 "filter{(1=1)}%>%map{1}");

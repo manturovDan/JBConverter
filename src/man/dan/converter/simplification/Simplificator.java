@@ -80,10 +80,12 @@ public class Simplificator {
         ((Number) vertex.getLeft()).setVal((int) res);
         vertex.getLeft().setParent(vertex.getParent());
 
-        if (((Operator) vertex.getParent()).getLeft() == vertex) {
-            ((Operator) vertex.getParent()).setLeft( vertex.getLeft());
-        } else if (((Operator) vertex.getParent()).getRight() == vertex) {
-            ((Operator) vertex.getParent()).setRight(vertex.getLeft());
+        if (vertex.getParent() != null) {
+            if (((Operator) vertex.getParent()).getLeft() == vertex) {
+                ((Operator) vertex.getParent()).setLeft(vertex.getLeft());
+            } else if (((Operator) vertex.getParent()).getRight() == vertex) {
+                ((Operator) vertex.getParent()).setRight(vertex.getLeft());
+            }
         }
 
         return vertex;
