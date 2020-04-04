@@ -94,26 +94,28 @@ public class Lexer {
         }
 
         if(Character.isDigit(peek)) {
-            int val = 0;
+            long val = 0;
             int add;
 
             do {
-                if (val > Integer.MAX_VALUE / 10)
+                if (val > Integer.MAX_VALUE || val < Integer.MIN_VALUE)
                     throw new SyntaxError();
 
                 val *= 10;
                 add = Character.digit(peek, 10);
-                Num.checkOverflow(val, add);
+
                 val += add;
 
                 readCh();
             } while (Character.isDigit(peek));
             cancelStep();
             val *= sign;
+            if (val > Integer.MAX_VALUE || val < Integer.MIN_VALUE)
+                throw new SyntaxError();
 
             waitBinMinus = true;
 
-            return new Num(val);
+            return new Num((int)val);
         }
 
         if (Character.isLetter(peek)) {

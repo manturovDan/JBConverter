@@ -20,6 +20,6 @@ public class ConvTestLst {
             "map{((((10*element)*20)+15)*0)}",
             "map{0}",
             "map{element}",
-            "map{((element+12)-(-2147483648-1))}"
+            "map{((element+12)-(-2147483647-1))}"
     ));
 }
