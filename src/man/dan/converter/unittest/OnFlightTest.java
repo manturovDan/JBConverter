@@ -12,17 +12,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class JSEng {
-    public static ScriptEngineManager mgr = new ScriptEngineManager();
-    public static ScriptEngine engine = mgr.getEngineByName("JavaScript");
+    public ScriptEngineManager mgr = new ScriptEngineManager();
+    public ScriptEngine engine = mgr.getEngineByName("JavaScript");
 }
 
 public class OnFlightTest {
-
-    @BeforeAll
-    public static void jsInit() {
-        ScriptEngineManager mgr = new ScriptEngineManager();
-        ScriptEngine engine = mgr.getEngineByName("JavaScript");
-    }
     @Test
     public void jsTest() throws ScriptException {
         ScriptEngineManager mgr = new ScriptEngineManager();
@@ -31,22 +25,22 @@ public class OnFlightTest {
         Assert.assertEquals(engine.eval(foo), 42);
     }
 
-    public boolean filter(String expr, long num) throws ScriptException {
+    public boolean filter(String expr, long num, JSEng eng) throws ScriptException {
         expr = expr.replaceAll("element", String.valueOf(num));
-        String res = JSEng.engine.eval(expr).toString();
+        String res = eng.engine.eval(expr).toString();
         //System.out.println("expr:" + expr);
         return res.equals("true") || res.equals("1");
     }
 
-    public long map(String expr, long num) throws ScriptException {
+    public long map(String expr, long num, JSEng eng) throws ScriptException {
         expr = expr.replaceAll("element", String.valueOf(num));
-        String res = JSEng.engine.eval(expr).toString();
+        String res = eng.engine.eval(expr).toString();
         if (res.equals("-0.0") || res.equals("-0"))
             return 0;
         return (long)(Double.parseDouble(res));
     }
 
-    public ArrayList<Long> flight(String expr, int from, int to, boolean resulted) throws ScriptException {
+    public ArrayList<Long> flight(String expr, int from, int to, boolean resulted, JSEng eng) throws ScriptException {
         ArrayList<Long> res = new ArrayList<>();
 
         expr = expr.replaceAll("=", "==");
@@ -66,7 +60,7 @@ public class OnFlightTest {
                     if (resulted && step != 0)
                         Assert.fail();
 
-                    if(!filter(match.group(2), num)) {
+                    if(!filter(match.group(2), num, eng)) {
                         continue next;
                     }
                 }
@@ -74,7 +68,7 @@ public class OnFlightTest {
                 if (match.group(1).equals("map")) {
                     if (resulted && step != 1)
                         Assert.fail();
-                    num = map(match.group(2), num);
+                    num = map(match.group(2), num, eng);
                 }
 
                 ++step;
@@ -88,38 +82,64 @@ public class OnFlightTest {
 
     @Test
     public void sandTest() throws Exception {
+        JSEng eng = new JSEng();
         String expr = "filter{(element>10)}%>%map{(element+5)}%>%filter{(1=1)}";
-        Assert.assertEquals(flight(expr, 8, 12, false), flight(expr, 8, 12, false));
+        Assert.assertEquals(flight(expr, 8, 12, false, eng), flight(expr, 8, 12, false, eng));
 
-        Assert.assertNotEquals(flight("filter{((((5+3)<8)|(1=0))&(element>-9))}", 8, 12, false), flight(expr, 8, 12, false));
+        Assert.assertNotEquals(flight("filter{((((5+3)<8)|(1=0))&(element>-9))}", 8, 12, false, eng), flight(expr, 8, 12, false, eng));
     }
 
     @Test
     public void FTSimple() throws Exception {
+        JSEng eng = new JSEng();
         String expr = "filter{(element>10)}%>%map{(element+5)}%>%filter{(1=1)}";
-        Assert.assertEquals(flight(MergerTest.allSteps(expr), 8, 12, true), flight(expr, 8, 12, false));
+        Assert.assertEquals(flight(MergerTest.allSteps(expr), 8, 12, true, eng), flight(expr, 8, 12, false, eng));
     }
 
     @Test
-    public void AllPlacementsTest() throws Exception {
-        int kMax = 3;
+    public void Pl1Test() throws Exception {
+        testForOneFMCountCount(1, 1);
+    }
+
+    @Test
+    public void Pl2Test() throws Exception {
+        testForOneFMCountCount(2, 0.6);
+    }
+
+    @Test
+    public void Pl3Test() throws Exception {
+        testForOneFMCountCount(3, 0.0001);
+    }
+
+    @Test
+    public void Pl4Test() throws Exception {
+        testForOneFMCountCount(4, 0.000005);
+    }
+
+    @Test
+    public void Pl5Test() throws Exception {
+        testForOneFMCountCount(5, 0.000000001);
+    }
+
+    public void testForOneFMCountCount(int k, double probability) throws Exception {
+        JSEng eng = new JSEng();
+
         StringBuilder bldTest = new StringBuilder();
-        for (int k = 1; k <= kMax; ++k) {
-            for (int i = (int)(Math.pow(16, k)); i < 2*(int)(Math.pow(16, k)); ++i) {
-                bldTest.setLength(0);
-                int num = i;
-                while (num > 1) {
-                    bldTest.append(ConvTestLst.lst.get(num % 16)).append("%>%");
-                    num /= 16;
-                }
-
-                bldTest.setLength(bldTest.length() - 3);
-                System.out.println(bldTest);
-                String str = bldTest.toString();
-
-                Assert.assertEquals(flight(MergerTest.allSteps(str), -200, 200, true), flight(str, -200, 200, false));
+        for (int i = (int)(Math.pow(16, k)); i < 2*(int)(Math.pow(16, k)); ++i) {
+            if (Math.random() >= probability)
+                continue;
+            bldTest.setLength(0);
+            int num = i;
+            while (num > 1) {
+                bldTest.append(ConvTestLst.lst.get(num % 16)).append("%>%");
+                num /= 16;
             }
-        System.out.println();
+
+            bldTest.setLength(bldTest.length() - 3);
+            //System.out.println(bldTest);
+            String str = bldTest.toString();
+
+            Assert.assertEquals(flight(MergerTest.allSteps(str), -200, 200, true, eng), flight(str, -200, 200, false, eng));
         }
     }
 }
