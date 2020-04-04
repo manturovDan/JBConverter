@@ -29,6 +29,9 @@ public class Simplificator {
             return vertex;
 
         if (vertex instanceof Operator) {
+            simplNode(((Operator) vertex).getLeft());
+            simplNode(((Operator) vertex).getRight());
+
             if (((Operator) vertex).getLeft() instanceof Number && ((Operator) vertex).getRight() instanceof Number) {
                 long res;
                 if (vertex instanceof Multiple) {
@@ -55,9 +58,6 @@ public class Simplificator {
 
                 return vertex;
             }
-
-            simplNode(((Operator) vertex).getLeft());
-            simplNode(((Operator) vertex).getRight());
         }
 
         return vertex;
