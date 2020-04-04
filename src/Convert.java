@@ -3,6 +3,7 @@ import man.dan.converter.parser.Parser;
 import man.dan.converter.parser.SyntaxError;
 import man.dan.converter.parser.TypeError;
 import man.dan.converter.representation.Call;
+import man.dan.converter.simplification.Simplificator;
 import man.dan.converter.transformer.MakeString;
 import man.dan.converter.transformer.Merger;
 
@@ -16,6 +17,8 @@ public class Convert {
             LinkedList<Call> callChain = parser.analysis();
             Merger merger = new Merger(callChain);
             merger.transform();
+            Simplificator simplificator = new Simplificator(callChain);
+            simplificator.simpl();
             return MakeString.view(callChain);
         } catch (SyntaxError s) {
             return "Syntax Error";
