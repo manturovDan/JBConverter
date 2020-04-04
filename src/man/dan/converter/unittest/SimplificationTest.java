@@ -83,4 +83,28 @@ public class SimplificationTest {
         Assert.assertEquals(allStepsSimpl("map{(15*20)}%>%map{(element-(element*12))}%>%map{(element-5)}%>%filter{((element<-21)&(element=1))}%>%filter{((element*element)>(-3*-2))}%>%filter{((2*(element+1))>(102-(3*(8*2))))}%>%map{(element-element)}"),
                 "filter{((((-3305<-21)&(-3305=1))&(10923025>6))&(-6608>54))}%>%map{0}");
     }
+
+    @Test
+    public void multiMulTest1() throws Exception {
+        Assert.assertEquals(allStepsSimpl("filter{(((((element*element)*-5)*2)>1)|(-1=-1))}%>%map{((-10*(element+(2+3)))*-100)}"),
+                "filter{(((-10*(element*element))>1)|(-1=-1))}%>%map{(1000*(element+5))}");
+    }
+
+    @Test
+    public void multiMulTest2() throws Exception {
+        Assert.assertEquals(allStepsSimpl("map{(4*((-1*(3*(-2-element)))*-2))}"),
+                "filter{(1=1)}%>%map{(24*(-2-element))}");
+    }
+
+    @Test
+    public void multiMulTest3() throws Exception {
+        Assert.assertEquals(allStepsSimpl("map{(4*((-1*(3*(element-4)))*-2))}"),
+                "filter{(1=1)}%>%map{(24*(element-4))}");
+    }
+
+    @Test
+    public void multiMulTest4() throws Exception {
+        Assert.assertEquals(allStepsSimpl("map{(5+(4*((-1*(3*(element-4)))*-2)))}"),
+                "filter{(1=1)}%>%map{(5+(24*(element-4)))}");
+    }
 }
