@@ -75,6 +75,6 @@ public class SimplificationTest {
     @Test
     public void mulNumSimplTest() throws Exception {
         Assert.assertEquals(allStepsSimpl("filter{((10*0)<element)}%>%map{(element-(3*40))}%>%filter{((9-((9+element)+(2*2)))=(-2147483648*-1))}%>%filter{(element>0)}%>%map{(element*-1)}"),
-                "filter{(((0<element)&(((9-((9+(element-120))+4))=(-2147483648*-1))))&((element-120)>0))}%>%map{((element-120)*-1)}");
+                "filter{(((0<element)&((9-((9+(element-120))+4)))=(-2147483648*-1))&(((element-120)>0))))}%>%map{((element-120)*-1)}");
     }
 }
