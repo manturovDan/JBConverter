@@ -80,7 +80,7 @@ public class SimplificationTest {
 
     @Test
     public void mulNumMFSimplTest() throws Exception {
-        Assert.assertEquals(allStepsSimpl("map{(15*20)}%>%map{(element-(element*12))}%>%map{(element-5)}%>%filter{((element<-21)&(element=1))}%>%filter{((element*element)>(-3*-2))}%>%filter{(2*(element+1)>(102-(3*(8*2))))}%>%map{(element-element)}"),
-                "filter{(((0<element)&((9-((9+(element-120))+4))=(-2147483648*-1)))&((element-120)>0))}%>%map{((element-120)*-1)}");
+        Assert.assertEquals(allStepsSimpl("map{(15*20)}%>%map{(element-(element*12))}%>%map{(element-5)}%>%filter{((element<-21)&(element=1))}%>%filter{((element*element)>(-3*-2))}%>%filter{((2*(element+1))>(102-(3*(8*2))))}%>%map{(element-element)}"),
+                "filter{((((-3305<-21)&(-3305=1))&(10923025>6))&(-6608>54))}%>%map{0}");
     }
 }

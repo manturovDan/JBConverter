@@ -86,6 +86,8 @@ public class Simplificator {
             } else if (((Operator) vertex.getParent()).getRight() == vertex) {
                 ((Operator) vertex.getParent()).setRight(vertex.getLeft());
             }
+        } else {
+            return vertex.getLeft();
         }
 
         return vertex;
