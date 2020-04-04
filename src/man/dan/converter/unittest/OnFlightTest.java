@@ -44,6 +44,7 @@ public class OnFlightTest {
         ArrayList<Long> res = new ArrayList<>();
 
         expr = expr.replaceAll("=", "==");
+        expr = expr.replaceAll("--", "+");
 
         Pattern patn = Pattern.compile("(filter|map)\\{((?:[0-9\\(\\)element\\*\\<>+\\-\\=\\&\\|])+)\\}");
         Matcher match;
@@ -93,7 +94,7 @@ public class OnFlightTest {
     public void FTSimple() throws Exception {
         JSEng eng = new JSEng();
         String expr = "filter{(element>10)}%>%map{(element+5)}%>%filter{(1=1)}";
-        Assert.assertEquals(flight(MergerTest.allSteps(expr), 8, 12, true, eng), flight(expr, 8, 12, false, eng));
+        Assert.assertEquals(flight(SimplificationTest.allStepsSimpl(expr), 8, 12, true, eng), flight(expr, 8, 12, false, eng));
     }
 
     @Test
@@ -108,17 +109,17 @@ public class OnFlightTest {
 
     @Test
     public void Pl3Test() throws Exception {
-        testForOneFMCountCount(3, 0.0001);
+        testForOneFMCountCount(3, 0.2);
     }
 
     @Test
     public void Pl4Test() throws Exception {
-        testForOneFMCountCount(4, 0.000005);
+        testForOneFMCountCount(4, 0.05);
     }
 
     @Test
     public void Pl5Test() throws Exception {
-        testForOneFMCountCount(5, 0.000000001);
+        testForOneFMCountCount(5, 0.01);
     }
 
     public void testForOneFMCountCount(int k, double probability) throws Exception {
@@ -139,7 +140,7 @@ public class OnFlightTest {
             //System.out.println(bldTest);
             String str = bldTest.toString();
 
-            Assert.assertEquals(flight(MergerTest.allSteps(str), -200, 200, true, eng), flight(str, -200, 200, false, eng));
+            Assert.assertEquals(flight(SimplificationTest.allStepsSimpl(str), -200, 200, true, eng), flight(str, -200, 200, false, eng));
         }
     }
 }
