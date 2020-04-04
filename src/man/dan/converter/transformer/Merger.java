@@ -29,17 +29,18 @@ public class Merger {
 
             gainRun(current);
 
+            boolean gainNow = false;
 
             if (previous instanceof FilterCall && current instanceof FilterCall) {
                 mergeFF((FilterCall) previous, (FilterCall) current);
             }
             else if (previous instanceof MapCall && current instanceof MapCall) {
                 mergeMM((MapCall)previous, (MapCall) current);
-                gainRun(current);
+                gainNow = true;
             }
             else if (previous instanceof MapCall && current instanceof FilterCall) {
                 mergeMF((MapCall)previous, (FilterCall) current);
-                gainRun(current);
+                gainNow = true;
             }
             else if (previous instanceof FilterCall && current instanceof MapCall) {
                 continue;
@@ -50,8 +51,10 @@ public class Merger {
             iter.previous();
             iter.previous();
             iter.remove();
-            if (iter.hasPrevious())
+            if (iter.hasPrevious()) { // do not gain run twice
                 iter.previous();
+            } else if (gainNow)
+                gainRun(current);
 
             current = iter.next();
 
