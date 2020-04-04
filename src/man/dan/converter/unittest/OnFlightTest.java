@@ -31,28 +31,30 @@ public class OnFlightTest {
         Assert.assertEquals(engine.eval(foo), 42);
     }
 
-    public boolean filter(String expr, int num) throws ScriptException {
+    public boolean filter(String expr, long num) throws ScriptException {
         expr = expr.replaceAll("element", String.valueOf(num));
         String res = JSEng.engine.eval(expr).toString();
         //System.out.println("expr:" + expr);
         return res.equals("true") || res.equals("1");
     }
 
-    public int map(String expr, int num) throws ScriptException {
+    public long map(String expr, long num) throws ScriptException {
         expr = expr.replaceAll("element", String.valueOf(num));
         String res = JSEng.engine.eval(expr).toString();
-        return Integer.parseInt(res);
+        if (res.equals("-0.0") || res.equals("-0"))
+            return 0;
+        return (long)(Double.parseDouble(res));
     }
 
-    public ArrayList<Integer> flight(String expr, int from, int to, boolean resulted) throws ScriptException {
-        ArrayList<Integer> res = new ArrayList<>();
+    public ArrayList<Long> flight(String expr, int from, int to, boolean resulted) throws ScriptException {
+        ArrayList<Long> res = new ArrayList<>();
 
         expr = expr.replaceAll("=", "==");
 
         Pattern patn = Pattern.compile("(filter|map)\\{((?:[0-9\\(\\)element\\*\\<>+\\-\\=\\&\\|])+)\\}");
         Matcher match;
         next: for (int i = from; i <= to; ++i) {
-            int num = i;
+            long num = i;
             match = patn.matcher(expr);
 
             int step = 0;
@@ -96,5 +98,28 @@ public class OnFlightTest {
     public void FTSimple() throws Exception {
         String expr = "filter{(element>10)}%>%map{(element+5)}%>%filter{(1=1)}";
         Assert.assertEquals(flight(MergerTest.allSteps(expr), 8, 12, true), flight(expr, 8, 12, false));
+    }
+
+    @Test
+    public void AllPlacementsTest() throws Exception {
+        int kMax = 3;
+        StringBuilder bldTest = new StringBuilder();
+        for (int k = 1; k <= kMax; ++k) {
+            for (int i = (int)(Math.pow(16, k)); i < 2*(int)(Math.pow(16, k)); ++i) {
+                bldTest.setLength(0);
+                int num = i;
+                while (num > 1) {
+                    bldTest.append(ConvTestLst.lst.get(num % 16)).append("%>%");
+                    num /= 16;
+                }
+
+                bldTest.setLength(bldTest.length() - 3);
+                System.out.println(bldTest);
+                String str = bldTest.toString();
+
+                Assert.assertEquals(flight(MergerTest.allSteps(str), -200, 200, true), flight(str, -200, 200, false));
+            }
+        System.out.println();
+        }
     }
 }
