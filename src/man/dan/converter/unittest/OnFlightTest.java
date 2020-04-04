@@ -104,22 +104,22 @@ public class OnFlightTest {
 
     @Test
     public void Pl2Test() throws Exception {
-        testForOneFMCountCount(2, 0.6);
+        testForOneFMCountCount(2, 0.1);
     }
 
     @Test
     public void Pl3Test() throws Exception {
-        testForOneFMCountCount(3, 0.2);
+        testForOneFMCountCount(3, 0.005);
     }
 
     @Test
     public void Pl4Test() throws Exception {
-        testForOneFMCountCount(4, 0.05);
+        testForOneFMCountCount(4, 0.0005);
     }
 
     @Test
     public void Pl5Test() throws Exception {
-        testForOneFMCountCount(5, 0.01);
+        testForOneFMCountCount(5, 0.00001);
     }
 
     public void testForOneFMCountCount(int k, double probability) throws Exception {
