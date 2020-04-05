@@ -151,4 +151,65 @@ public class OnFlightTest {
         String expr = "map{(5*(element*2))}%>%map{(element+element)}%>%map{((element+element)-(2*(element-element)))}%>%filter{((5<(element*20))|(3=0))}%>%filter{(element=element)}%>%filter{((element=1)|(element<10))}";
         Assert.assertEquals(flight(SimplificationTest.allStepsSimpl(expr), -10, 10, true, eng), flight(expr, -10, 10, false, eng));
     }
+
+    @Test
+    public void moreTests2() throws Exception {
+        JSEng eng = new JSEng(); // I thought that it will be faster, because tests run in parallel, but no
+
+        String expr = "map{(5*(element*2))}%>%map{(element+element)}%>%map{((element+element)-(2*(element-element)))}%>%filter{((5<(element*20))|(3=0))}%>%filter{(element=element)}%>%" +
+                "filter{((element=1)|(element<10))}%>%map{(element+(3*(element*4)))}";
+        Assert.assertEquals(flight(SimplificationTest.allStepsSimpl(expr), -10, 10, true, eng), flight(expr, -10, 10, false, eng));
+    }
+
+    @Test
+    public void moreTests3() throws Exception {
+        JSEng eng = new JSEng(); // I thought that it will be faster, because tests run in parallel, but no
+
+        String expr = "map{(5*(element*2))}%>%map{(element+element)}%>%map{((element+element)-(2*(element-element)))}%>%filter{((5<(element*20))|(3=0))}%>%" +
+                "filter{(element=element)}%>%filter{((element=1)|(element<10))}%>%map{(element+(3*(element*4)))}%>%map{((3*(element*4))*5)}";
+        Assert.assertEquals(flight(SimplificationTest.allStepsSimpl(expr), -10, 10, true, eng), flight(expr, -10, 10, false, eng));
+    }
+
+    @Test
+    public void moreTests4() throws Exception {
+        JSEng eng = new JSEng(); // I thought that it will be faster, because tests run in parallel, but no
+
+        String expr = "filter{(element>0)}%>%map{(5*(element*2))}%>%map{(element+element)}%>%map{((element+element)-(2*(element-element)))}%>%filter{((5<(element*20))|(3=0))}%>%filter{(element=element)}%>%filter{((element=1)|(element<10))}";
+        Assert.assertEquals(flight(SimplificationTest.allStepsSimpl(expr), -10, 10, true, eng), flight(expr, -10, 10, false, eng));
+    }
+
+    @Test
+    public void moreTests5() throws Exception {
+        JSEng eng = new JSEng(); // I thought that it will be faster, because tests run in parallel, but no
+
+        String expr = "filter{(element>0)}%>%map{(5*(element*2))}%>%map{(element+element)}%>%map{((element+element)-(2*(element-element)))}%>%filter{((5<(element*20))|(3=0))}%>%filter{(element=element)}%>%" +
+                "filter{((element=1)|(element<10))}%>%map{(element+(3*(element*4)))}";
+        Assert.assertEquals(flight(SimplificationTest.allStepsSimpl(expr), -10, 10, true, eng), flight(expr, -10, 10, false, eng));
+    }
+
+    @Test
+    public void moreTests6() throws Exception {
+        JSEng eng = new JSEng(); // I thought that it will be faster, because tests run in parallel, but no
+
+        String expr = "filter{(element>0)}%>%map{(5*(element*2))}%>%map{(element+element)}%>%map{((element+element)-(2*(element-element)))}%>%filter{((5<(element*20))|(3=0))}%>%" +
+                "filter{(element=element)}%>%filter{((element=1)|(element<10))}%>%map{(element+(3*(element*4)))}%>%map{((3*(element*4))*5)}";
+        Assert.assertEquals(flight(SimplificationTest.allStepsSimpl(expr), -10, 10, true, eng), flight(expr, -10, 10, false, eng));
+    }
+
+    @Test
+    public void moreTests7() throws Exception {
+        JSEng eng = new JSEng(); // I thought that it will be faster, because tests run in parallel, but no
+
+        String expr = "map{(element+element)}%>%map{(element+element)}%>%map{(element+element)}%>%map{(element+element)}%>%map{(element+element)}%>%map{(element+element)}%>%map{(element+element)}";
+        Assert.assertEquals(flight(SimplificationTest.allStepsSimpl(expr), -10, 10, true, eng), flight(expr, -10, 10, false, eng));
+    }
+
+    @Test
+    public void moreTests8() throws Exception {
+        JSEng eng = new JSEng(); // I thought that it will be faster, because tests run in parallel, but no
+
+        String expr = "filter{(element>0)}%>%map{(element+element)}%>%filter{(element>0)}%>%map{(element+element)}%>%filter{(element>0)}%>%map{(element+element)}%>%filter{(element>0)}%>%map{(element+element)}%>%filter{(element>0)}%>%map{(element+element)}%>%filter{(element>0)}%>%map{(element+element)}";
+        Assert.assertEquals(flight(SimplificationTest.allStepsSimpl(expr), -10, 10, true, eng), flight(expr, -10, 10, false, eng));
+    }
+
 }
