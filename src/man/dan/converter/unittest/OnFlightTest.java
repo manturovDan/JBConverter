@@ -27,13 +27,14 @@ public class OnFlightTest {
 
     public boolean filter(String expr, long num, JSEng eng) throws ScriptException {
         expr = expr.replaceAll("element", String.valueOf(num));
+        expr = expr.replaceAll("--", "+");
         String res = eng.engine.eval(expr).toString();
-        //System.out.println("expr:" + expr);
         return res.equals("true") || res.equals("1");
     }
 
     public long map(String expr, long num, JSEng eng) throws ScriptException {
         expr = expr.replaceAll("element", String.valueOf(num));
+        expr = expr.replaceAll("--", "+");
         String res = eng.engine.eval(expr).toString();
         if (res.equals("-0.0") || res.equals("-0"))
             return 0;
@@ -44,7 +45,6 @@ public class OnFlightTest {
         ArrayList<Long> res = new ArrayList<>();
 
         expr = expr.replaceAll("=", "==");
-        expr = expr.replaceAll("--", "+");
 
         Pattern patn = Pattern.compile("(filter|map)\\{((?:[0-9\\(\\)element\\*\\<>+\\-\\=\\&\\|])+)\\}");
         Matcher match;
@@ -137,10 +137,18 @@ public class OnFlightTest {
             }
 
             bldTest.setLength(bldTest.length() - 3);
-            //System.out.println(bldTest);
+
             String str = bldTest.toString();
 
             Assert.assertEquals(flight(SimplificationTest.allStepsSimpl(str), -200, 200, true, eng), flight(str, -200, 200, false, eng));
         }
+    }
+
+    @Test
+    public void moreTests1() throws Exception {
+        JSEng eng = new JSEng(); // I thought that it will be faster, because tests run in parallel, but no
+
+        String expr = "map{(5*(element*2))}%>%map{(element+element)}%>%map{((element+element)-(2*(element-element)))}%>%filter{((5<(element*20))|(3=0))}%>%filter{(element=element)}%>%filter{((element=1)|(element<10))}";
+        Assert.assertEquals(flight(SimplificationTest.allStepsSimpl(expr), -10, 10, true, eng), flight(expr, -10, 10, false, eng));
     }
 }

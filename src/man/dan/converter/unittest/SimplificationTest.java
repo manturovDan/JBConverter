@@ -16,9 +16,9 @@ public class SimplificationTest {
         Lexer lex = new Lexer(input);
         Parser parser = new Parser(lex);
         LinkedList<Call> callChain = parser.analysis();
-        Simplificator simplificator = new Simplificator(callChain);
         Merger merger = new Merger(callChain);
         merger.transform();
+        Simplificator simplificator = new Simplificator(callChain);
         simplificator.simpl();
         return MakeString.view(callChain);
     }
