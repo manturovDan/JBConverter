@@ -21,9 +21,9 @@ public class Convert {
             simplificator.simpl();
             return MakeString.view(callChain);
         } catch (SyntaxError s) {
-            return "Syntax Error";
+            return "SYNTAX ERROR";
         } catch (TypeError t) {
-            return "Type Error";
+            return "TYPE ERROR";
         }
     }
 }
